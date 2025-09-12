@@ -1,58 +1,53 @@
-import Stripe from "stripe";
-import { NextResponse } from "next/server";
+// src/app/api/checkout_sessions/route.ts
+import { NextResponse } from "next/server"
+import Stripe from "stripe"
 
-export const runtime = "nodejs" as const;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: "2024-06-20",
+})
 
-export async function POST(request: Request) {
-  const origin =
-    request.headers.get("origin") ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "http://localhost:3000";
-
-  const secret = process.env.STRIPE_SECRET_KEY;
-  if (!secret) {
-    return NextResponse.json({ error: "STRIPE_SECRET_KEY manquante." }, { status: 500 });
-  }
-
-  const stripe = new Stripe(secret, { apiVersion: "2024-06-20" });
-
-  let payload: any = {};
-  try { payload = await request.json(); } catch {}
-
-  const rawPlan = (payload?.plan ?? "").toString();
-  const plan = rawPlan.toUpperCase() as "VISITE" | "DOSSIER" | "PACK";
-
-  const PRICE_MAP = { VISITE: 5000, DOSSIER: 5000, PACK: 8500 } as const;
-  const LABEL_MAP = {
-    VISITE: "Visite immobilière premium (dépôt de priorité)",
-    DOSSIER: "Préparation de dossier",
-    PACK: "Pack Visite + Dossier",
-  } as const;
-
-  if (!plan || !(plan in PRICE_MAP)) {
-    return NextResponse.json({ error: `Plan invalide: ${rawPlan}` }, { status: 400 });
-  }
-
+export async function POST(req: Request) {
   try {
+    const body = await req.json()
+    const { type } = body // "VISITE" | "DOSSIER" | "PACK"
+
+    let priceId: string | undefined
+
+    if (type === "VISITE") {
+      priceId = process.env.STRIPE_PRICE_VISITE
+    } else if (type === "DOSSIER") {
+      priceId = process.env.STRIPE_PRICE_DOSSIER
+    } else if (type === "PACK") {
+      priceId = process.env.STRIPE_PRICE_PACK
+    }
+
+    if (!priceId) {
+      return NextResponse.json(
+        { error: "Type de produit invalide." },
+        { status: 400 }
+      )
+    }
+
+    // ✅ Création de la session Stripe Checkout
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
       payment_method_types: ["card"],
       line_items: [
         {
-          price_data: {
-            currency: "cad",
-            unit_amount: PRICE_MAP[plan],
-            product_data: { name: LABEL_MAP[plan] },
-          },
+          price: priceId,
           quantity: 1,
         },
       ],
-      success_url: `${origin}/reservations?status=success`,
-      cancel_url: `${origin}/reservations?status=cancel`,
-    });
+      mode: "payment",
+      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?canceled=true`,
+    })
 
-    return NextResponse.json({ id: session.id, url: session.url });
+    return NextResponse.json({ url: session.url })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error("Stripe error:", err)
+    return NextResponse.json(
+      { error: "Erreur lors de la création de la session Stripe." },
+      { status: 500 }
+    )
   }
 }

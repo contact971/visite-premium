@@ -5,7 +5,7 @@ import { useState, useMemo } from "react"
 import { FaCalendarAlt, FaClock, FaHome, FaSearch, FaDollarSign } from "react-icons/fa"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { logements } from "../../data/logements" // chemin corrigé
+import { logements } from "../../data/logements"
 
 const PRIX = { VISITE: 50, DOSSIER: 50, PACK: 85 } as const
 type Plan = "VISITE" | "DOSSIER" | "PACK"
@@ -21,7 +21,7 @@ export default function Reservations() {
 
   const PER_PAGE = 9
 
-  // Filtrage par recherche
+  // 🔎 Filtrage par recherche
   const filteredLogements = useMemo(() => {
     return logements.filter(
       (l) =>
@@ -41,7 +41,7 @@ export default function Reservations() {
     [plan]
   )
 
-  // Envoi Stripe
+  // ✅ Envoi Stripe (corrigé → envoie "type" au lieu de "plan")
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -50,7 +50,7 @@ export default function Reservations() {
       const res = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ logement, date, heure, plan }),
+        body: JSON.stringify({ type: plan, logement, date, heure }),
       })
 
       const data = await res.json()
@@ -109,7 +109,7 @@ export default function Reservations() {
             />
           </div>
 
-          {/* Choix logement sous forme de grille */}
+          {/* Choix logement */}
           <div>
             <label className="block font-semibold mb-4 flex items-center gap-2">
               <FaHome /> Sélectionnez un logement
