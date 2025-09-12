@@ -9,7 +9,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { type, logement, date, heure } = body // Reçu depuis page.tsx
+    const { type, logement, date, heure } = body
+
+    console.log("➡️ Requête reçue depuis reservations/page.tsx :", body)
+    console.log("➡️ Stripe Price IDs chargés :", {
+      VISITE: process.env.STRIPE_PRICE_VISITE,
+      DOSSIER: process.env.STRIPE_PRICE_DOSSIER,
+      PACK: process.env.STRIPE_PRICE_PACK,
+    })
 
     let priceId: string | undefined
 
@@ -22,13 +29,13 @@ export async function POST(req: Request) {
     }
 
     if (!priceId) {
+      console.error("❌ Aucun priceId trouvé pour le type:", type)
       return NextResponse.json(
         { error: "Type de produit invalide." },
         { status: 400 }
       )
     }
 
-    // ✅ Création session Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -44,13 +51,15 @@ export async function POST(req: Request) {
         heure: heure || "Non spécifiée",
         plan: type,
       },
-      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?success=true`,
+      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?canceled=true`,
     })
 
+    console.log("✅ Session Stripe créée :", session.id)
+
     return NextResponse.json({ url: session.url })
   } catch (err: any) {
-    console.error("Stripe error:", err)
+    console.error("❌ Stripe error:", err)
     return NextResponse.json(
       { error: "Erreur lors de la création de la session Stripe." },
       { status: 500 }
