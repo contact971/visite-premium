@@ -71,9 +71,13 @@ export default function LogementsPage() {
 
           // 🏷️ Badge dynamique
           let badge: string | null = null
-          if (logement.id <= 5) badge = "Nouveau"
-          else if (parseInt(logement.prix.replace(/\D/g, "")) > 2500)
+          if (logement.id && parseInt(logement.id.toString()) <= 5) {
+            badge = "Nouveau"
+          } else if (
+            parseInt(logement.prix.replace(/\D/g, "")) > 2500
+          ) {
             badge = "Exclusif"
+          }
 
           return (
             <motion.div
