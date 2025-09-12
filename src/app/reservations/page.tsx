@@ -11,6 +11,7 @@ const PRIX = { VISITE: 50, DOSSIER: 50, PACK: 85 } as const
 type Plan = "VISITE" | "DOSSIER" | "PACK"
 
 export default function Reservations() {
+  // ✅ ID de logement en string (aligne avec ton src/data/logements.ts)
   const [logement, setLogement] = useState<string>("")
   const [date, setDate] = useState("")
   const [heure, setHeure] = useState("")
@@ -23,10 +24,9 @@ export default function Reservations() {
 
   // 🔎 Filtrage par recherche
   const filteredLogements = useMemo(() => {
+    const q = search.toLowerCase()
     return logements.filter(
-      (l) =>
-        l.titre.toLowerCase().includes(search.toLowerCase()) ||
-        l.emplacement.toLowerCase().includes(search.toLowerCase())
+      (l) => l.titre.toLowerCase().includes(q) || l.emplacement.toLowerCase().includes(q)
     )
   }, [search])
 
@@ -41,7 +41,7 @@ export default function Reservations() {
     [plan]
   )
 
-  // ✅ Envoi Stripe (corrigé → envoie "type" au lieu de "plan")
+  // ✅ Envoi Stripe (on envoie "type" comme attendu par l'API)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -50,7 +50,12 @@ export default function Reservations() {
       const res = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: plan, logement, date, heure }),
+        body: JSON.stringify({
+          type: plan,
+          logement: logement || "",
+          date,
+          heure,
+        }),
       })
 
       const data = await res.json()
@@ -109,7 +114,7 @@ export default function Reservations() {
             />
           </div>
 
-          {/* Choix logement */}
+          {/* Choix logement sous forme de grille */}
           <div>
             <label className="block font-semibold mb-4 flex items-center gap-2">
               <FaHome /> Sélectionnez un logement
@@ -128,11 +133,7 @@ export default function Reservations() {
                       : "border-transparent hover:border-yellow-400"
                   }`}
                 >
-                  <img
-                    src={l.cover}
-                    alt={l.titre}
-                    className="w-full h-40 object-cover"
-                  />
+                  <img src={l.cover} alt={l.titre} className="w-full h-40 object-cover" />
                   <div className="p-3 bg-white">
                     <p className="font-semibold text-sm">{l.titre}</p>
                     <p className="text-xs text-neutral-600">{l.emplacement}</p>
@@ -206,9 +207,7 @@ export default function Reservations() {
                 value="VISITE"
                 className="mt-1"
                 checked={plan === "VISITE"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPlan(e.target.value as Plan)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
                 <div className="font-semibold">Visite premium — 50&nbsp;$</div>
@@ -225,9 +224,7 @@ export default function Reservations() {
                 value="DOSSIER"
                 className="mt-1"
                 checked={plan === "DOSSIER"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPlan(e.target.value as Plan)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
                 <div className="font-semibold">Préparation de dossier — 50&nbsp;$</div>
@@ -244,9 +241,7 @@ export default function Reservations() {
                 value="PACK"
                 className="mt-1"
                 checked={plan === "PACK"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPlan(e.target.value as Plan)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
                 <div className="font-semibold">
@@ -255,9 +250,7 @@ export default function Reservations() {
                     Meilleur choix
                   </span>
                 </div>
-                <p className="text-sm text-neutral-700">
-                  Visite premium + préparation de dossier.
-                </p>
+                <p className="text-sm text-neutral-700">Visite premium + préparation de dossier.</p>
               </div>
             </label>
           </div>
@@ -293,10 +286,11 @@ export default function Reservations() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-4 rounded-xl text-lg font-semibold shadow-md transition
-            ${loading
-              ? "bg-yellow-600/60 cursor-not-allowed text-white"
-              : "bg-gradient-to-r from-yellow-600 to-yellow-700 text-white hover:opacity-90"}`}
+            className={`w-full py-4 rounded-xl text-lg font-semibold shadow-md transition ${
+              loading
+                ? "bg-yellow-600/60 cursor-not-allowed text-white"
+                : "bg-gradient-to-r from-yellow-600 to-yellow-700 text-white hover:opacity-90"
+            }`}
           >
             {loading ? "Traitement..." : `Confirmer et payer – $${total} CAD`}
           </button>

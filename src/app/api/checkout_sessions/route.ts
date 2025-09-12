@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { type } = body // "VISITE" | "DOSSIER" | "PACK"
+    const { type, logement, date, heure } = body // Reçu depuis page.tsx
 
     let priceId: string | undefined
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       )
     }
 
-    // ✅ Création de la session Stripe Checkout
+    // ✅ Création session Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -38,6 +38,12 @@ export async function POST(req: Request) {
         },
       ],
       mode: "payment",
+      metadata: {
+        logement: logement || "Non spécifié",
+        date: date || "Non spécifiée",
+        heure: heure || "Non spécifiée",
+        plan: type,
+      },
       success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?canceled=true`,
     })
