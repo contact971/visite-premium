@@ -2,6 +2,7 @@
 import "./globals.css";
 import Link from "next/link";
 import Footer from "../components/Footer"; // ✅ import du vrai Footer
+import { Analytics } from "@vercel/analytics/react"; // ✅ import Analytics
 
 export const metadata = {
   title: "Luxor – Visites premium",
@@ -57,6 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* FOOTER optimisé */}
         <Footer />
+
+        {/* Analytics (Vercel) */}
+        <Analytics />
       </body>
     </html>
   );
