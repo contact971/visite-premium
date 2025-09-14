@@ -5,16 +5,14 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { FaBolt, FaClipboardList, FaShieldAlt, FaStar, FaCheckCircle } from "react-icons/fa"
+import { logements } from "../data/logements"
 
-const apps = ["app1", "app2", "app3", "app4", "app5", "app6", "app7", "app8"] // IDs alignés avec logements.ts
+type Logement = (typeof logements)[number]
 
 export default function Home() {
-  // ------- Carrousel paginé (multi-cards) -------
   const [itemsPerView, setItemsPerView] = useState(4)
-  const [pageIndex, setPageIndex] = useState(0)
-  const [paused, setPaused] = useState(false)
 
-  // calc nb de cartes visibles selon largeur
+  // calcule combien de cartes selon largeur écran
   useEffect(() => {
     const calc = () => {
       const w = window.innerWidth
@@ -28,44 +26,26 @@ export default function Home() {
     return () => window.removeEventListener("resize", calc)
   }, [])
 
-  // chunks par page
-  const pages = useMemo(() => {
-    const out: string[][] = []
-    for (let i = 0; i < apps.length; i += itemsPerView) {
-      out.push(apps.slice(i, i + itemsPerView))
+  // regroupe logements par "pages"
+  const pages: Logement[][] = useMemo(() => {
+    const out: Logement[][] = []
+    for (let i = 0; i < logements.length; i += itemsPerView) {
+      out.push(logements.slice(i, i + itemsPerView))
     }
     return out
   }, [itemsPerView])
 
-  const totalPages = pages.length
-
-  // reset page si layout change
-  useEffect(() => {
-    setPageIndex(0)
-  }, [itemsPerView])
-
-  // auto défilement
-  useEffect(() => {
-    if (totalPages <= 1) return
-    if (paused) return
-    const id = setInterval(() => {
-      setPageIndex((p) => (p + 1) % totalPages)
-    }, 4000)
-    return () => clearInterval(id)
-  }, [totalPages, paused])
-
   return (
     <main className="relative min-h-screen overflow-hidden">
-      {/* ================= HERO (CTA #1) ================= */}
+      {/* ================= HERO ================= */}
       <section className="relative z-10 text-center pt-20 pb-12 px-6">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-          <img src="/logo.png" alt="Luxor" className="w-44 mx-auto mb-6 drop-shadow-2xl" loading="eager" decoding="sync" />
+          <img src="/logo.png" alt="Luxor" className="w-44 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-3xl md:text-5xl font-semibold text-white drop-shadow-lg">
             Visites immobilières premium à Montréal
           </h1>
           <p className="text-neutral-200 max-w-2xl mx-auto mt-4">
             <strong>Visitez avant tout le monde</strong> et boostez votre crédibilité locataire avec notre préparation de dossier.
-            Simple, rapide, premium.
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-3">
@@ -84,7 +64,7 @@ export default function Home() {
               ["48h", "confirmation moyenne"],
               [
                 <>
-                  4.9 <span className="inline-flex align-middle"><FaStar className="ml-1" /></span>
+                  4.9 <FaStar className="inline ml-1" />
                 </>,
                 "note de satisfaction",
               ],
@@ -99,85 +79,54 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ================= GALERIE (Carrousel multi-cards paginé) ================= */}
+      {/* ================= LOGEMENTS (grille statique) ================= */}
       <section className="relative z-10 w-full py-12 px-6">
         <h2 className="text-center text-2xl md:text-3xl font-semibold text-white mb-6 drop-shadow-lg">
           Nos appartements disponibles
         </h2>
 
-        <div
-          className="relative max-w-6xl mx-auto overflow-hidden rounded-2xl"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
-          {/* bande des pages */}
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{
-              width: `${totalPages * 100}%`,
-              transform: `translateX(-${pageIndex * (100 / totalPages)}%)`,
-            }}
-          >
-            {pages.map((group, pIdx) => (
-              <div key={pIdx} className="flex-none w-full px-1 sm:px-2">
-                <div className="flex justify-center gap-4">
-                  {group.map((id) => (
-                    <Link
-                      key={id}
-                      href={`/logements/${id}`}
-                      className="block shrink-0 w-[78%] sm:w-[46%] md:w-[31%] lg:w-[22%] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition"
-                    >
-                      <img
-                        src={`/images/${id}/cover.jpg`}
-                        alt={`Appartement ${id}`}
-                        className="w-full h-48 md:h-56 object-cover"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {logements.slice(0, 8).map((logement) => (
+            <div
+              key={logement.id}
+              className="group bg-white/95 rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden flex flex-col relative"
+            >
+              {/* Badge dynamique */}
+              {logement.badge && (
+                <span className="absolute top-2 left-2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded">
+                  {logement.badge}
+                </span>
+              )}
 
-          {/* Flèches */}
-          {totalPages > 1 && (
-            <>
-              <button
-                aria-label="Précédent"
-                onClick={() => setPageIndex((p) => (p - 1 + totalPages) % totalPages)}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/55 hover:bg-black/75 text-white rounded-full h-10 w-10 flex items-center justify-center"
-              >
-                ‹
-              </button>
-              <button
-                aria-label="Suivant"
-                onClick={() => setPageIndex((p) => (p + 1) % totalPages)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/55 hover:bg-black/75 text-white rounded-full h-10 w-10 flex items-center justify-center"
-              >
-                ›
-              </button>
-            </>
-          )}
+              <Link href={`/logements/${logement.id}`}>
+                <div className="relative w-full h-48 md:h-56 overflow-hidden">
+                  <img
+                    src={logement.cover}
+                    alt={logement.titre}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-xs px-2 py-1 rounded shadow-md">
+                    {logement.prix}
+                  </span>
+                </div>
+              </Link>
+              <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-semibold text-black line-clamp-2 mb-1">{logement.titre}</h3>
+                <p className="text-xs text-neutral-600 mb-3">{logement.emplacement}</p>
+                <Link
+                  href={`/logements/${logement.id}`}
+                  className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                >
+                  Voir le logement
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Pastilles */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-5 gap-2">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPageIndex(i)}
-                className={`h-2 w-2 rounded-full transition ${i === pageIndex ? "bg-yellow-500 w-4" : "bg-white/40"}`}
-                aria-label={`Aller à la page ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
-
         <div className="text-center mt-6">
-          <Link href="/logements" className="inline-block px-5 py-3 bg-white/90 text-black rounded-xl shadow hover:bg-white transition">
+          <Link href="/logements" className="inline-block px-6 py-3 bg-white/90 text-black font-medium rounded-xl shadow hover:bg-white transition">
             Voir tous les logements
           </Link>
         </div>
@@ -186,7 +135,13 @@ export default function Home() {
       {/* ================= SERVICES ================= */}
       <section className="relative z-10 w-full py-16 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 className="text-3xl md:text-4xl font-semibold text-white mb-4 drop-shadow-lg" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <motion.h2
+            className="text-3xl md:text-4xl font-semibold text-white mb-4 drop-shadow-lg"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             Nos services premium
           </motion.h2>
           <p className="text-neutral-200 max-w-2xl mx-auto mb-10">
@@ -306,7 +261,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= Sticky CTA (mobile only) ================= */}
+      {/* ================= Sticky CTA (mobile) ================= */}
       <div className="fixed bottom-4 left-0 right-0 mx-auto w-[92%] md:hidden z-50">
         <Link href="/reservations" className="block text-center px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow-xl transition">
           Réserver maintenant (85 $)

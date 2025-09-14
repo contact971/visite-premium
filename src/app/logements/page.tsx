@@ -12,7 +12,7 @@ export default function LogementsPage() {
   const [page, setPage] = useState(1)
   const PER_PAGE = 12
 
-  // 🔎 Filtrage par mot-clé
+  // 🔎 Filtrage
   const filteredLogements = useMemo(() => {
     return logements.filter(
       (l) =>
@@ -38,7 +38,7 @@ export default function LogementsPage() {
         Nos appartements premium
       </motion.h1>
 
-      {/* 🔎 Barre de recherche */}
+      {/* 🔎 Recherche */}
       <div className="max-w-4xl mx-auto mb-10">
         <div className="flex items-center gap-3 bg-white/90 rounded-xl shadow px-4 py-3">
           <FaSearch className="text-neutral-500" />
@@ -69,13 +69,18 @@ export default function LogementsPage() {
               ? logement.description.slice(0, 110) + "..."
               : logement.description
 
-          // 🏷️ Badge dynamique
+          // 🏷️ Badge dynamique (calculé à l’affichage)
           let badge: string | null = null
-          if (logement.id && parseInt(logement.id.toString()) <= 5) {
+          const prixNum = parseInt(logement.prix.replace(/\D/g, "")) || 0
+          const idNum = parseInt(logement.id.replace("app", "")) || 0
+
+          if ([12, 38].includes(idNum)) {
+            badge = "Promo"
+          } else if (idNum >= 31 && idNum <= 40) {
+            badge = "Étudiant"
+          } else if (idNum <= 5) {
             badge = "Nouveau"
-          } else if (
-            parseInt(logement.prix.replace(/\D/g, "")) > 2500
-          ) {
+          } else if (prixNum > 2500) {
             badge = "Exclusif"
           }
 
@@ -95,11 +100,21 @@ export default function LogementsPage() {
                   className="w-full h-56 object-cover"
                 />
                 {badge && (
-                  <span className="absolute top-3 left-3 bg-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                  <span
+                    className={`absolute top-3 left-3 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md
+                      ${
+                        badge === "Promo"
+                          ? "bg-red-600"
+                          : badge === "Étudiant"
+                          ? "bg-blue-600"
+                          : badge === "Nouveau"
+                          ? "bg-green-600"
+                          : "bg-yellow-600"
+                      }`}
+                  >
                     {badge}
                   </span>
                 )}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition" />
               </div>
 
               {/* Contenu */}
