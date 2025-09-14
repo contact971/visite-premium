@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 export default function ConditionsPage() {
   return (
     <main className="min-h-screen py-20 px-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-10 leading-relaxed text-neutral-800 text-justify border border-white/10"
           initial={{ opacity: 0, y: 30 }}
@@ -14,79 +14,69 @@ export default function ConditionsPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-3xl font-bold text-center mb-8 text-neutral-900">
-            Conditions d’utilisation – Service Premium de Réservation de Visite
+            Conditions d’utilisation – Luxor Visites Premium
           </h1>
 
-          <p className="whitespace-pre-line">
-            Notre plateforme offre un service premium payant qui permet à
-            l’utilisateur de réserver une visite prioritaire d’un logement
-            présenté sur notre site. En procédant au paiement de ce service,
-            l’utilisateur reconnaît et accepte l’intégralité des conditions
-            décrites ci-dessous, lesquelles constituent un accord juridiquement
-            contraignant. Le frais demandé, soit cinquante dollars (50 $) plus
-            taxes applicables, constitue exclusivement un frais administratif et
-            technologique pour l’organisation et la gestion d’un rendez-vous de
-            visite. Ce montant ne représente en aucun cas un dépôt de location,
-            un acompte, un crédit, une avance ou une quelconque garantie de
-            bail. Le service fourni est limité à l’organisation d’une visite et
-            n’accorde aucun droit de location ni aucune priorité dans le
-            processus décisionnel du propriétaire.
-
-            Il est entendu que notre société n’est pas propriétaire des
-            logements présentés sur la plateforme. Les logements appartiennent à
-            des tiers, qu’il s’agisse de propriétaires individuels, de courtiers
-            ou de gestionnaires immobiliers. Nous n’exerçons aucun contrôle sur
-            la disponibilité réelle, l’état, la conformité ou les conditions de
-            location des logements, et nous ne participons en aucune manière aux
-            décisions relatives à l’attribution ou à la signature éventuelle
-            d’un bail. L’utilisateur comprend et accepte que la réservation
-            d’une visite n’entraîne et n’impose aucune garantie de location. La
-            décision finale quant à l’octroi ou non d’un logement relève
-            uniquement du propriétaire ou de son représentant.
-
-            L’utilisateur accepte également qu’aucun remboursement ne sera
-            effectué après paiement, et ce, quelle que soit la situation. Cette
-            absence de remboursement s’applique notamment, mais sans s’y
-            limiter, en cas d’absence ou de retard de l’utilisateur au
-            rendez-vous, d’annulation ou de modification par le propriétaire, de
-            retrait du logement du marché, d’indisponibilité, de refus de
-            candidature, ou de tout autre événement hors de notre contrôle. Le
-            paiement effectué constitue un engagement ferme et irrévocable de la
-            part de l’utilisateur, et celui-ci renonce expressément à tout
-            recours visant à obtenir un remboursement, un dédommagement ou une
-            compensation.
-
-            Notre rôle se limite exclusivement à une fonction d’intermédiaire
-            technologique facilitant la mise en relation et l’organisation des
-            visites. Nous ne garantissons pas l’exactitude ou l’exhaustivité des
+          <p>
+            L’utilisation de la plateforme Luxor et le paiement d’un service
+            impliquent l’acceptation entière et irrévocable des présentes
+            conditions. Le service offert constitue exclusivement un service
+            administratif et technologique permettant de réserver une visite
+            prioritaire de logement et, le cas échéant, d’accéder à une option
+            de préparation de dossier. Le montant exigé, soit cinquante dollars
+            (50 $) CAD pour une visite premium, cinquante dollars (50 $) CAD
+            pour la préparation de dossier ou quatre-vingt-cinq dollars (85 $)
+            CAD pour le Pack complet, est facturé à titre de frais
+            administratifs fixes. Ce paiement ne représente pas un acompte, un
+            dépôt de location, une avance, un crédit, une garantie de bail ni un
+            quelconque droit locatif. Il s’agit exclusivement d’un frais lié à
+            l’organisation, la gestion et la priorisation de rendez-vous via une
+            infrastructure technologique. Luxor n’est pas propriétaire des
+            logements présentés et ne détient aucun droit sur ceux-ci. Les
+            logements appartiennent à des tiers (propriétaires, gestionnaires,
+            courtiers) qui demeurent seuls responsables de leur disponibilité, de
+            leurs caractéristiques, de leur conformité et de la décision finale
+            d’attribuer ou non un bail. La réservation d’une visite ne garantit
+            en aucun cas l’obtention d’un logement. Toute décision de location
+            demeure à la discrétion exclusive du propriétaire ou de son
+            représentant. L’utilisateur comprend et accepte que, quelle que soit
+            la situation, aucun remboursement ne sera accordé après le paiement.
+            Cette politique stricte s’applique notamment, sans limitation, en
+            cas d’absence ou de retard de l’utilisateur, de désistement, de
+            retrait du logement par son propriétaire, d’annulation ou de
+            modification du rendez-vous, d’indisponibilité, de refus de
+            candidature ou de tout événement indépendant de notre contrôle. Le
+            paiement est définitif, ferme et irrévocable, et l’utilisateur
+            renonce expressément à tout recours en remboursement, dédommagement
+            ou compensation. Luxor agit exclusivement comme intermédiaire
+            technologique et administratif, facilitant la mise en relation et la
+            coordination de visites. Nous ne garantissons pas l’exactitude des
             informations fournies par les propriétaires, ni la tenue effective
-            des visites, ni la qualité ou la conformité des logements.
-            L’utilisateur reconnaît que toute information concernant un logement
-            est transmise à titre indicatif et sous la responsabilité exclusive
-            du propriétaire ou de son représentant. En aucun cas, notre
-            responsabilité ne saurait être engagée pour des frais engagés par
-            l’utilisateur, des déplacements inutiles, des pertes de temps, des
-            désagréments, ou encore des dommages directs, indirects ou
-            consécutifs résultant de l’utilisation de notre service ou de
-            l’annulation ou modification d’une visite.
-
-            Nous déclarons expressément ne pas être courtiers immobiliers au
+            des visites, ni la qualité ou la conformité des logements. Les
+            descriptions, photos et caractéristiques publiées le sont à titre
+            indicatif et relèvent de la responsabilité exclusive des
+            propriétaires ou courtiers. Notre responsabilité ne peut en aucun
+            cas être engagée pour des frais, déplacements, pertes de temps,
+            désagréments, dommages matériels, moraux, directs ou indirects
+            découlant de l’utilisation de notre service, de l’annulation ou du
+            report d’une visite. Nous ne sommes pas courtiers immobiliers au
             sens de l’Organisme d’autoréglementation du courtage immobilier du
-            Québec (OACIQ). Notre service n’est pas une agence immobilière, ne
-            constitue pas une activité de courtage, et ne confère aucune
-            garantie de bail ni aucun droit locatif. Le service est fourni tel
-            quel (“as is”), sans garantie d’aucune nature, qu’elle soit expresse
-            ou implicite.
-
-            En procédant au paiement et à l’utilisation de notre plateforme,
-            l’utilisateur confirme avoir lu, compris et accepté toutes les
-            dispositions des présentes conditions, lesquelles s’appliquent
-            intégralement et sans restriction. L’utilisateur reconnaît qu’il
-            s’agit d’un service administratif et technologique distinct,
-            indépendant de toute décision de location, et accepte que la
-            responsabilité finale relative à la disponibilité, la location et la
-            conclusion éventuelle d’un bail appartienne exclusivement au
-            propriétaire ou à son représentant.
+            Québec (OACIQ). Notre plateforme n’est pas une agence immobilière,
+            n’exerce pas d’activités de courtage et n’accorde aucune garantie de
+            bail ni droit locatif. Le service est fourni tel quel (“as is”),
+            sans garantie expresse ou implicite de disponibilité, de qualité,
+            d’adéquation ou de résultat. Les paiements sont traités via la
+            solution Stripe, conforme aux normes PCI DSS et reconnue
+            internationalement pour la sécurité des transactions. Luxor n’a
+            jamais accès directement aux données bancaires des utilisateurs. En
+            procédant au paiement et à la réservation, l’utilisateur confirme
+            avoir lu, compris et accepté intégralement les présentes conditions,
+            reconnaît que le service est indépendant de toute décision de
+            location et accepte que toute responsabilité finale quant à la
+            disponibilité, l’octroi et la conclusion d’un bail appartienne
+            exclusivement au propriétaire ou à son représentant. Toute
+            utilisation du service vaut acceptation explicite des présentes
+            conditions sans restriction.
           </p>
         </motion.div>
       </div>

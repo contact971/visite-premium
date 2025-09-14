@@ -205,9 +205,9 @@ export default function Home() {
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
           {[
-            { name: "Camille", text: "Prise de rendez-vous hyper rapide, service nickel. J’ai eu mon créneau le lendemain !" },
+            { name: "Camille", text: "Prise de rendez-vous hyper rapide, service insane. J’ai eu mon rendez-vous le lendemain !" },
             { name: "Jordan", text: "Le pack à 85 $ vaut le coup. Dossier prêt, visite prioritaire — tout s’est enchaîné." },
-            { name: "Sarah", text: "Très pro et simple. Je recommande pour accélérer sa recherche de logement à Montréal." },
+            { name: "Sarah", text: "Très pro et simple. Je recommande pour closer sa recherche de logement à Montréal." },
           ].map((t, i) => (
             <motion.div
               key={i}

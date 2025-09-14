@@ -21,13 +21,23 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
   return (
     <main className="relative min-h-screen">
       <div className="relative z-10">
-        {/* Cover immersive */}
+        {/* Cover immersive avec watermark */}
         <section className="relative w-full h-[65vh]">
-          <img
-            src={logement.cover}
-            alt={`${logement.titre} – couverture`}
-            className="w-full h-full object-cover"
-          />
+          <div className="relative w-full h-full">
+            <img
+              src={logement.cover}
+              alt={`${logement.titre} – couverture`}
+              className="w-full h-full object-cover"
+            />
+            {/* Watermark */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="Luxor watermark"
+                className="opacity-20 w-2/3 max-w-md pointer-events-none select-none"
+              />
+            </div>
+          </div>
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg mb-4">
               {logement.titre}
@@ -45,12 +55,21 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             <section>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {galleryImages.slice(0, 4).map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`${logement.titre} – photo ${i + 1}`}
-                    className="w-full h-64 object-cover rounded-xl shadow-md"
-                  />
+                  <div key={i} className="relative">
+                    <img
+                      src={src}
+                      alt={`${logement.titre} – photo ${i + 1}`}
+                      className="w-full h-64 object-cover rounded-xl shadow-md"
+                    />
+                    {/* Watermark */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src="/logo.png"
+                        alt="Luxor watermark"
+                        className="opacity-15 w-1/2 pointer-events-none select-none"
+                      />
+                    </div>
+                  </div>
                 ))}
               </div>
               {galleryImages.length > 4 && (
@@ -131,7 +150,6 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto p-6"
           >
-            {/* Fond repris du layout */}
             <div className="absolute inset-0">
               <img
                 src="/images/background.jpg"
@@ -150,12 +168,21 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
 
             <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
               {galleryImages.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`${logement.titre} – photo ${i + 1}`}
-                  className="w-full h-72 object-cover rounded-xl shadow"
-                />
+                <div key={i} className="relative">
+                  <img
+                    src={src}
+                    alt={`${logement.titre} – photo ${i + 1}`}
+                    className="w-full h-72 object-cover rounded-xl shadow"
+                  />
+                  {/* Watermark */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <img
+                      src="/logo.png"
+                      alt="Luxor watermark"
+                      className="opacity-15 w-2/3 max-w-sm pointer-events-none select-none"
+                    />
+                  </div>
+                </div>
               ))}
             </div>
           </motion.div>
