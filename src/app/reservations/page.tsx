@@ -1,4 +1,3 @@
-// src/app/reservations/page.tsx
 "use client"
 
 import { useState, useMemo } from "react"
@@ -11,7 +10,6 @@ const PRIX = { VISITE: 50, DOSSIER: 50, PACK: 85 } as const
 type Plan = "VISITE" | "DOSSIER" | "PACK"
 
 export default function Reservations() {
-  // ✅ ID de logement en string (aligne avec ton src/data/logements.ts)
   const [logement, setLogement] = useState<string>("")
   const [date, setDate] = useState("")
   const [heure, setHeure] = useState("")
@@ -22,7 +20,6 @@ export default function Reservations() {
 
   const PER_PAGE = 9
 
-  // 🔎 Filtrage par recherche
   const filteredLogements = useMemo(() => {
     const q = search.toLowerCase()
     return logements.filter(
@@ -31,17 +28,13 @@ export default function Reservations() {
   }, [search])
 
   const totalPages = Math.ceil(filteredLogements.length / PER_PAGE)
-  const paginatedLogements = filteredLogements.slice(
-    (page - 1) * PER_PAGE,
-    page * PER_PAGE
-  )
+  const paginatedLogements = filteredLogements.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
   const total = useMemo(
     () => (plan === "VISITE" ? PRIX.VISITE : plan === "DOSSIER" ? PRIX.DOSSIER : PRIX.PACK),
     [plan]
   )
 
-  // ✅ Envoi Stripe (on envoie "type" comme attendu par l'API)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -50,12 +43,7 @@ export default function Reservations() {
       const res = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: plan,
-          logement: logement || "",
-          date,
-          heure,
-        }),
+        body: JSON.stringify({ type: plan, logement: logement || "", date, heure }),
       })
 
       const data = await res.json()
@@ -71,7 +59,7 @@ export default function Reservations() {
 
   return (
     <main className="relative min-h-screen py-16 px-6">
-      {/* Hero */}
+      {/* HERO */}
       <motion.div
         className="relative z-10 flex flex-col items-center mb-12"
         initial={{ opacity: 0, y: 20 }}
@@ -86,9 +74,9 @@ export default function Reservations() {
         </p>
       </motion.div>
 
-      {/* Formulaire */}
+      {/* FORMULAIRE */}
       <motion.div
-        className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 w-full max-w-5xl mx-auto relative"
+        className="bg-black/60 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-8 w-full max-w-5xl mx-auto relative"
         whileHover={{ scale: 1.01 }}
       >
         {/* Badge prix sticky */}
@@ -99,7 +87,7 @@ export default function Reservations() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Recherche logement */}
           <div>
-            <label className="block font-semibold mb-2 flex items-center gap-2">
+            <label className="block font-semibold mb-2 text-white flex items-center gap-2">
               <FaSearch /> Rechercher un logement
             </label>
             <input
@@ -110,17 +98,17 @@ export default function Reservations() {
                 setPage(1)
               }}
               placeholder="Ex: Montréal, Penthouse..."
-              className="w-full p-3 border rounded-lg"
+              className="w-full p-3 rounded-lg bg-black/30 border border-white/10 text-white placeholder-neutral-400 focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
-          {/* Choix logement sous forme de grille */}
+          {/* Choix logement */}
           <div>
-            <label className="block font-semibold mb-4 flex items-center gap-2">
+            <label className="block font-semibold mb-4 text-white flex items-center gap-2">
               <FaHome /> Sélectionnez un logement
             </label>
             {paginatedLogements.length === 0 && (
-              <p className="text-sm text-neutral-500">Aucun logement trouvé.</p>
+              <p className="text-sm text-neutral-400">Aucun logement trouvé.</p>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {paginatedLogements.map((l) => (
@@ -130,13 +118,13 @@ export default function Reservations() {
                   className={`cursor-pointer rounded-xl overflow-hidden border-2 shadow-sm transition ${
                     logement === l.id
                       ? "border-yellow-600 ring-2 ring-yellow-600"
-                      : "border-transparent hover:border-yellow-400"
+                      : "border-white/10 hover:border-yellow-400"
                   }`}
                 >
                   <img src={l.cover} alt={l.titre} className="w-full h-40 object-cover" />
-                  <div className="p-3 bg-white">
+                  <div className="p-3 bg-black/40 text-white">
                     <p className="font-semibold text-sm">{l.titre}</p>
-                    <p className="text-xs text-neutral-600">{l.emplacement}</p>
+                    <p className="text-xs text-neutral-400">{l.emplacement}</p>
                   </div>
                 </div>
               ))}
@@ -149,18 +137,18 @@ export default function Reservations() {
                   type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-4 py-2 rounded bg-neutral-200 text-neutral-700 disabled:opacity-50"
+                  className="px-4 py-2 rounded bg-black/40 text-white border border-white/10 disabled:opacity-40"
                 >
                   Précédent
                 </button>
-                <span className="text-sm text-neutral-600">
+                <span className="text-sm text-neutral-300">
                   Page {page} / {totalPages}
                 </span>
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="px-4 py-2 rounded bg-neutral-200 text-neutral-700 disabled:opacity-50"
+                  className="px-4 py-2 rounded bg-black/40 text-white border border-white/10 disabled:opacity-40"
                 >
                   Suivant
                 </button>
@@ -171,26 +159,26 @@ export default function Reservations() {
           {/* Date & heure */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label className="block font-semibold mb-2 flex items-center gap-2">
+              <label className="block font-semibold mb-2 text-white flex items-center gap-2">
                 <FaCalendarAlt /> Date
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-3 rounded-lg bg-black/30 border border-white/10 text-white focus:ring-2 focus:ring-yellow-500"
                 required
               />
             </div>
             <div>
-              <label className="block font-semibold mb-2 flex items-center gap-2">
+              <label className="block font-semibold mb-2 text-white flex items-center gap-2">
                 <FaClock /> Heure
               </label>
               <input
                 type="time"
                 value={heure}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setHeure(e.target.value)}
-                className="w-full p-3 border rounded-lg"
+                className="w-full p-3 rounded-lg bg-black/30 border border-white/10 text-white focus:ring-2 focus:ring-yellow-500"
                 required
               />
             </div>
@@ -198,9 +186,9 @@ export default function Reservations() {
 
           {/* Choix formule */}
           <div className="space-y-3">
-            <p className="block font-semibold mb-1">Formule</p>
+            <p className="block font-semibold mb-1 text-white">Formule</p>
 
-            <label className="flex items-start gap-3 p-4 rounded-xl border hover:border-yellow-600 cursor-pointer transition">
+            <label className="flex items-start gap-3 p-4 rounded-xl bg-black/40 border border-white/10 hover:border-yellow-600 cursor-pointer transition">
               <input
                 type="radio"
                 name="plan"
@@ -210,14 +198,14 @@ export default function Reservations() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
-                <div className="font-semibold">Visite premium — 50&nbsp;$</div>
-                <p className="text-sm text-neutral-700">
-                  Réservation prioritaire de créneau, confirmation rapide.
+                <div className="text-white font-medium">Visite premium — 50&nbsp;$</div>
+                <p className="text-sm text-neutral-400">
+                  Réservation prioritaire, confirmation rapide.
                 </p>
               </div>
             </label>
 
-            <label className="flex items-start gap-3 p-4 rounded-xl border hover:border-yellow-600 cursor-pointer transition">
+            <label className="flex items-start gap-3 p-4 rounded-xl bg-black/40 border border-white/10 hover:border-yellow-600 cursor-pointer transition">
               <input
                 type="radio"
                 name="plan"
@@ -227,14 +215,14 @@ export default function Reservations() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
-                <div className="font-semibold">Préparation de dossier — 50&nbsp;$</div>
-                <p className="text-sm text-neutral-700">
-                  Aide à la constitution d’un dossier solide (documents, conseils).
+                <div className="text-white font-medium">Préparation de dossier — 50&nbsp;$</div>
+                <p className="text-sm text-neutral-400">
+                  Aide à la constitution d’un dossier solide.
                 </p>
               </div>
             </label>
 
-            <label className="relative flex items-start gap-3 p-4 rounded-xl border-2 border-yellow-600 bg-yellow-50 cursor-pointer transition">
+            <label className="relative flex items-start gap-3 p-4 rounded-xl bg-black/60 border-2 border-yellow-600 cursor-pointer transition">
               <input
                 type="radio"
                 name="plan"
@@ -244,13 +232,13 @@ export default function Reservations() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
-                <div className="font-semibold">
+                <div className="text-white font-medium">
                   Pack complet — 85&nbsp;$
                   <span className="ml-2 inline-block text-xs font-bold text-yellow-700 bg-yellow-200 px-2 py-0.5 rounded-full">
                     Meilleur choix
                   </span>
                 </div>
-                <p className="text-sm text-neutral-700">Visite premium + préparation de dossier.</p>
+                <p className="text-sm text-neutral-400">Visite premium + préparation de dossier.</p>
               </div>
             </label>
           </div>
@@ -258,9 +246,9 @@ export default function Reservations() {
           {/* Conditions */}
           <div className="flex items-start space-x-2 mt-2">
             <input type="checkbox" id="conditions" required className="mt-1" />
-            <label htmlFor="conditions" className="text-sm text-neutral-700">
+            <label htmlFor="conditions" className="text-sm text-neutral-300">
               J’ai lu et j’accepte les{" "}
-              <Link href="/conditions" className="text-blue-600 underline">
+              <Link href="/conditions" className="text-yellow-500 underline">
                 conditions d’utilisation
               </Link>
               .
@@ -269,7 +257,7 @@ export default function Reservations() {
 
           {/* Résumé dynamique */}
           {logement && date && heure && (
-            <div className="bg-neutral-100 rounded-xl p-4 text-sm text-neutral-700 shadow-inner">
+            <div className="bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-neutral-200 shadow-inner">
               <p>
                 <strong>Résumé :</strong>{" "}
                 {logements.find((l) => l.id === logement)?.titre || logement}, le {date} à {heure} —{" "}

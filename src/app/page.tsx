@@ -76,58 +76,60 @@ export default function Home() {
       </section>
 
       {/* ================= LOGEMENTS ================= */}
-      <section className="relative z-10 w-full py-12 px-6">
-        <h2 className="text-center text-2xl md:text-3xl font-semibold text-white mb-6 drop-shadow-lg">
-          Nos appartements disponibles
-        </h2>
+<section className="relative z-10 w-full py-12 px-6">
+  <h2 className="text-center text-2xl md:text-3xl font-semibold text-white mb-6 drop-shadow-lg">
+    Nos appartements disponibles
+  </h2>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {logements.slice(0, 8).map((logement) => (
-            <div
-              key={logement.id}
-              className="group bg-white/95 rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden flex flex-col relative"
-            >
-              {/* Badge dynamique */}
-              {logement.badge && (
-                <span className="absolute top-2 left-2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded">
-                  {logement.badge}
-                </span>
-              )}
+  <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {logements.slice(0, 8).map((logement) => (
+      <div
+        key={logement.id}
+        className="group bg-black/60 backdrop-blur-md rounded-xl shadow-lg hover:shadow-yellow-600/40 transition overflow-hidden flex flex-col relative border border-white/10"
+      >
+        {/* Badge dynamique */}
+        {logement.badge && (
+          <span className="absolute top-2 left-2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded shadow">
+            {logement.badge}
+          </span>
+        )}
 
-              <Link href={`/logements/${logement.id}`}>
-                <div className="relative w-full h-48 md:h-56 overflow-hidden">
-                  <img
-                    src={logement.cover}
-                    alt={logement.titre}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-xs px-2 py-1 rounded shadow-md">
-                    {logement.prix}
-                  </span>
-                </div>
-              </Link>
-              <div className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-semibold text-black line-clamp-2 mb-1">{logement.titre}</h3>
-                <p className="text-xs text-neutral-600 mb-3">{logement.emplacement}</p>
-                <Link
-                  href={`/logements/${logement.id}`}
-                  className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
-                >
-                  Voir le logement
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-6">
-          <Link href="/logements" className="inline-block px-6 py-3 bg-white/90 text-black font-medium rounded-xl shadow hover:bg-white transition">
-            Voir tous les logements
+        <Link href={`/logements/${logement.id}`}>
+          <div className="relative w-full h-48 md:h-56 overflow-hidden">
+            <img
+              src={logement.cover}
+              alt={logement.titre}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              loading="lazy"
+            />
+            <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-xs px-2 py-1 rounded shadow-md">
+              {logement.prix}
+            </span>
+          </div>
+        </Link>
+        <div className="p-4 flex flex-col flex-1">
+          <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1">{logement.titre}</h3>
+          <p className="text-xs text-neutral-400 mb-3">{logement.emplacement}</p>
+          <Link
+            href={`/logements/${logement.id}`}
+            className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+          >
+            Voir le logement
           </Link>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
 
+  <div className="text-center mt-6">
+    <Link
+      href="/logements"
+      className="inline-block px-6 py-3 bg-white/90 text-black font-medium rounded-xl shadow hover:bg-white transition"
+    >
+      Voir tous les logements
+    </Link>
+  </div>
+</section>
       {/* ================= SERVICES ================= */}
       <section className="relative z-10 w-full py-16 px-6">
         <div className="max-w-6xl mx-auto text-center">
