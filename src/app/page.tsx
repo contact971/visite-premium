@@ -79,7 +79,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ================= LOGEMENTS (grille statique) ================= */}
+      {/* ================= LOGEMENTS ================= */}
       <section className="relative z-10 w-full py-12 px-6">
         <h2 className="text-center text-2xl md:text-3xl font-semibold text-white mb-6 drop-shadow-lg">
           Nos appartements disponibles
@@ -238,9 +238,9 @@ export default function Home() {
             <img src="/images/background2.jpg" alt="Équipe professionnelle" className="rounded-xl" loading="lazy" decoding="async" />
           </div>
           <div className="bg-gradient-to-br from-black/70 to-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/10">
-            <h2 className="text-2xl font-semibold text-white mb-3 drop-shadow-md">Une équipe professionnelle à votre service</h2>
+            <h2 className="text-2xl font-semibold text-white mb-3 drop-shadow-md">Une équipe dédiée à votre succès locatif</h2>
             <p className="text-neutral-200 leading-relaxed">
-              Accompagnement dédié, coordination des visites et préparation de votre dossier pour maximiser vos chances d’obtenir le logement ciblé.
+              Nous vous offrons un accompagnement humain et transparent : visites prioritaires confirmées rapidement, préparation de dossier sur mesure et suivi personnalisé. Avec Luxor, vous maximisez vos chances d’obtenir le logement désiré — avant les autres candidats.
             </p>
           </div>
         </div>

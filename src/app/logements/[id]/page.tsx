@@ -1,10 +1,12 @@
+// src/app/logements/[id]/page.tsx
 "use client"
 
 import { notFound } from "next/navigation"
+import Link from "next/link"
 import { logements } from "../../../data/logements"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined } from "react-icons/fa"
+import { FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined, FaArrowLeft } from "react-icons/fa"
 
 export default function LogementDetail({ params }: { params: { id: string } }) {
   const logement = logements.find((l) => l.id === params.id)
@@ -131,13 +133,24 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               Intéressé par ce logement ? Réservez votre visite premium dès
               maintenant.
             </p>
-            <a
+            <Link
               href="/reservations"
               className="inline-block px-8 py-4 rounded-xl text-yellow-700 font-semibold shadow-lg bg-white hover:opacity-90 transition"
             >
               Réserver ma visite →
-            </a>
+            </Link>
           </section>
+
+          {/* Retour à la liste optimisé (lisibilité améliorée) */}
+<div className="text-center">
+  <Link
+    href="/logements"
+    className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-yellow-600 hover:text-white hover:bg-yellow-600 px-4 py-2 rounded-lg transition drop-shadow-md"
+  >
+    <FaArrowLeft className="text-xs" />
+    Retour à la liste des logements
+  </Link>
+</div>
         </div>
       </div>
 
