@@ -1,8 +1,8 @@
 // src/app/layout.tsx
 import "./globals.css";
 import Link from "next/link";
-import Footer from "../components/Footer"; // ✅ import du vrai Footer
-import { Analytics } from "@vercel/analytics/react"; // ✅ import Analytics
+import Footer from "../components/Footer"; 
+import { Analytics } from "@vercel/analytics/react"; 
 
 export const metadata = {
   title: "Luxor – Visites premium",
@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body className="min-h-screen antialiased bg-transparent relative">
-        {/* 🌌 Fond global animé (CSS-only) commun à TOUTES les pages */}
+        {/* 🌌 Fond global animé */}
         <div className="fixed inset-0 -z-10">
           <div
             className="absolute inset-0 bg-cover bg-center bg-animated"
@@ -22,22 +22,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        {/* HEADER translucide */}
+        {/* HEADER */}
         <header className="w-full fixed top-0 inset-x-0 z-50">
           <div className="mx-auto max-w-7xl px-6">
             <nav className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md px-6 py-3">
-              <Link href="/" className="flex items-center gap-3">
+              <Link href="/" className="flex items-center">
                 <img src="/logo.png" alt="Luxor" className="h-8 w-auto" />
-                <span className="text-white/90 font-semibold tracking-wide">Luxor</span>
               </Link>
 
+              {/* ✅ Menu principal réorganisé */}
               <div className="hidden md:flex items-center gap-6">
                 <Link href="/" className="text-white/90 hover:text-white">Accueil</Link>
                 <Link href="/logements" className="text-white/90 hover:text-white">Logements</Link>
                 <Link href="/reservations" className="text-white/90 hover:text-white">Réservations</Link>
+                <Link href="/proprietaires" className="text-white/90 hover:text-white">Propriétaires</Link>
                 <Link href="/nous-joindres" className="text-white/90 hover:text-white">Nous joindre</Link>
               </div>
 
+              {/* CTA bouton */}
               <div className="hidden md:block">
                 <Link
                   href="/reservations"
@@ -56,10 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* CONTENU */}
         {children}
 
-        {/* FOOTER optimisé */}
+        {/* FOOTER */}
         <Footer />
 
-        {/* Analytics (Vercel) */}
         <Analytics />
       </body>
     </html>

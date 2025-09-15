@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { FaBolt, FaClipboardList, FaShieldAlt, FaStar, FaCheckCircle } from "react-icons/fa"
 import { logements } from "../data/logements"
+import PremiumCard from "../components/PremiumCard"
 
 type Logement = (typeof logements)[number]
 
@@ -57,23 +58,18 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* KPIs */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-white/90">
+          {/* KPIs en PremiumCard */}
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
               ["200+", "visites organisées"],
               ["48h", "confirmation moyenne"],
-              [
-                <>
-                  4.9 <FaStar className="inline ml-1" />
-                </>,
-                "note de satisfaction",
-              ],
+              ["4.9 ★", "note de satisfaction"],
               ["#MTL", "couverture locale"],
             ].map(([kpi, label], i) => (
-              <div key={i} className="rounded-xl border border-white/10 bg-black/30 backdrop-blur-md p-3">
-                <p className="text-xl font-bold">{kpi as any}</p>
-                <p className="text-xs">{label}</p>
-              </div>
+              <PremiumCard key={i} className="text-center text-white">
+                <p className="text-2xl font-bold text-yellow-500">{kpi}</p>
+                <p className="text-sm text-neutral-300">{label}</p>
+              </PremiumCard>
             ))}
           </div>
         </motion.div>
@@ -148,45 +144,24 @@ export default function Home() {
             Combinez la <strong>visite prioritaire</strong> avec la <strong>préparation de dossier</strong> pour maximiser vos chances.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            <motion.div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10" whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
-              <div className="flex items-center gap-3 mb-3">
-                <FaBolt className="text-yellow-600" />
-                <h3 className="text-lg font-semibold">Visite prioritaire</h3>
-              </div>
-              <p className="text-neutral-700 mb-4">Créneau confirmé rapidement et suivi personnalisé.</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold">$50</span>
-                <span className="text-sm text-neutral-500">/ visite</span>
-              </div>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <PremiumCard>
+              <h3 className="text-lg font-semibold text-white mb-2">Visite prioritaire</h3>
+              <p className="text-neutral-300">Créneau confirmé rapidement et suivi personnalisé.</p>
+              <p className="text-yellow-500 font-bold mt-3">$50 / visite</p>
+            </PremiumCard>
 
-            <motion.div className="bg-white/92 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10" whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
-              <div className="flex items-center gap-3 mb-3">
-                <FaClipboardList className="text-yellow-600" />
-                <h3 className="text-lg font-semibold">Préparation de dossier</h3>
-              </div>
-              <p className="text-neutral-700 mb-4">Documents vérifiés et dossier complet prêt à soumettre.</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold">$50</span>
-                <span className="text-sm text-neutral-500">/ dossier</span>
-              </div>
-            </motion.div>
+            <PremiumCard>
+              <h3 className="text-lg font-semibold text-white mb-2">Préparation de dossier</h3>
+              <p className="text-neutral-300">Documents vérifiés et dossier complet prêt à soumettre.</p>
+              <p className="text-yellow-500 font-bold mt-3">$50 / dossier</p>
+            </PremiumCard>
 
-            <motion.div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-yellow-600 relative" whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
-              <span className="absolute -top-3 right-4 bg-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
-                Meilleur choix
-              </span>
-              <div className="flex items-center gap-3 mb-3">
-                <FaShieldAlt className="text-yellow-600" />
-                <h3 className="text-lg font-semibold">Pack Visite + Dossier</h3>
-              </div>
-              <p className="text-neutral-700 mb-4">Solution complète : gain de temps + crédibilité accrue.</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold">$85</span>
-                <span className="text-sm text-neutral-500">/ pack</span>
-              </div>
-            </motion.div>
+            <PremiumCard>
+              <h3 className="text-lg font-semibold text-white mb-2">Pack Visite + Dossier</h3>
+              <p className="text-neutral-300">Solution complète : gain de temps + crédibilité accrue.</p>
+              <p className="text-yellow-500 font-bold mt-3">$85 / pack</p>
+            </PremiumCard>
           </div>
 
           <div className="mt-10">
@@ -209,14 +184,7 @@ export default function Home() {
             { name: "Jordan", text: "Le pack à 85 $ vaut le coup. Dossier prêt, visite prioritaire — tout s’est enchaîné." },
             { name: "Sarah", text: "Très pro et simple. Je recommande pour closer sa recherche de logement à Montréal." },
           ].map((t, i) => (
-            <motion.div
-              key={i}
-              className="bg-black/35 text-white backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10 flex flex-col justify-between"
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-            >
+            <PremiumCard key={i} className="flex flex-col justify-between text-white">
               <div>
                 <div className="flex items-center gap-2 text-yellow-400 mb-2">
                   <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
@@ -226,7 +194,7 @@ export default function Home() {
               <p className="mt-4 text-xs text-white/70 flex items-center gap-1">
                 <FaCheckCircle className="text-green-400" /> Avis vérifié — {t.name}
               </p>
-            </motion.div>
+            </PremiumCard>
           ))}
         </div>
       </section>
@@ -234,30 +202,31 @@ export default function Home() {
       {/* ================= ÉQUIPE ================= */}
       <section className="relative z-10 w-full py-16">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-4">
-            <img src="/images/background2.jpg" alt="Équipe professionnelle" className="rounded-xl" loading="lazy" decoding="async" />
+          <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <img src="/images/background2.jpg" alt="Équipe professionnelle" className="w-full h-full object-cover" loading="lazy" />
           </div>
-          <div className="bg-gradient-to-br from-black/70 to-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/10">
+          <PremiumCard>
             <h2 className="text-2xl font-semibold text-white mb-3 drop-shadow-md">Une équipe dédiée à votre succès locatif</h2>
-            <p className="text-neutral-200 leading-relaxed">
-              Nous vous offrons un accompagnement humain et transparent : visites prioritaires confirmées rapidement, préparation de dossier sur mesure et suivi personnalisé. Avec Luxor, vous maximisez vos chances d’obtenir le logement désiré — avant les autres candidats.
+            <p className="text-neutral-300 leading-relaxed">
+              Nous vous offrons un accompagnement humain et transparent : visites prioritaires confirmées rapidement, préparation de dossier sur mesure et suivi personnalisé. 
+              Avec Luxor, vous maximisez vos chances d’obtenir le logement désiré — avant les autres candidats.
             </p>
-          </div>
+          </PremiumCard>
         </div>
       </section>
 
       {/* ================= CTA FINAL ================= */}
       <section className="relative z-10 w-full py-14">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md px-6 py-8 text-center">
+          <PremiumCard className="text-center">
             <h3 className="text-xl md:text-2xl text-white font-semibold mb-2">Prêt à accélérer votre recherche ?</h3>
-            <p className="text-neutral-200 mb-6">
+            <p className="text-neutral-300 mb-6">
               Réservez votre visite prioritaire et ajoutez la préparation de dossier pour maximiser vos chances.
             </p>
             <Link href="/reservations" className="inline-block px-7 py-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow transition">
               Réserver maintenant – Pack 85 $
             </Link>
-          </div>
+          </PremiumCard>
         </div>
       </section>
 

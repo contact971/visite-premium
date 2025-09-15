@@ -3,137 +3,127 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { FaCrown, FaUserCheck, FaCalendarCheck, FaBolt, FaShieldAlt } from "react-icons/fa"
+import { FaCrown, FaUserCheck, FaCalendarCheck, FaBolt } from "react-icons/fa"
 
 export default function ProprietairesPage() {
   return (
-    <main className="relative min-h-screen w-full">
-      {/* En-tête de page */}
-      <section className="max-w-6xl mx-auto px-6 pt-10 pb-6">
+    <main className="relative min-h-screen w-full bg-gradient-to-br from-black via-neutral-900 to-black text-white">
+      {/* En-tête */}
+      <section className="max-w-6xl mx-auto px-6 pt-16 pb-10 text-center">
         <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-3xl md:text-4xl font-semibold text-white drop-shadow-lg">
-            Espace propriétaires — Bientôt disponible
+          <h1 className="text-3xl md:text-5xl font-bold text-yellow-500 drop-shadow-lg">
+            Espace propriétaires
           </h1>
-          <p className="mt-3 text-neutral-200 max-w-2xl mx-auto">
-            Publiez vos logements sur une vitrine premium, recevez des candidats qualifiés
-            et planifiez des visites prioritaires en quelques clics.
+          <p className="mt-4 text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            Confiez-nous vos logements : vous envoyez les infos, nous créons et publions une annonce 
+            premium qui attire des candidats <strong>qualifiés et motivés</strong>.
           </p>
 
-          {/* CTA principaux */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* CTA */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:contact@luxorpremium.com?subject=Espace%20Propri%C3%A9taires%20-%20Je%20veux%20publier%20un%20logement"
-              className="px-6 py-3 rounded-xl bg-yellow-600 hover:bg-yellow-700 text-white font-semibold shadow-lg transition"
+              href="mailto:contact@luxorpremium.com?subject=Publication%20avec%20Luxor&body=Nom:%0ATéléphone:%0AAdresse%20du%20logement:%0APrix:%0AType%20(logement, chambres, etc.):%0ADescription:%0APhotos%20(en%20pièce%20jointe):"
+              className="px-7 py-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:scale-105 transition text-white font-semibold shadow-lg"
             >
-              Parler à un représentant
+              Envoyer mes infos par email
             </a>
             <Link
               href="/nous-joindres"
-              className="px-6 py-3 rounded-xl bg-white/90 hover:bg-white text-black font-semibold shadow-lg transition"
-            >
-              Nous joindre
-            </Link>
-          </div>
-
-          {/* Badge statut */}
-          <div className="mt-4 inline-flex items-center gap-2 text-xs text-white/80 bg-white/10 border border-white/10 px-3 py-1.5 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
-            Phase pilote — Inscription sur liste d’attente
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Avantages clés */}
-      <section className="max-w-6xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              icon: <FaCrown className="text-yellow-600" />,
-              title: "Vitrine premium",
-              text: "Mise en avant de vos annonces auprès d’un public sérieux et motivé."
-            },
-            {
-              icon: <FaUserCheck className="text-yellow-600" />,
-              title: "Candidats qualifiés",
-              text: "Dossiers préparés (option) pour accélérer la prise de décision."
-            },
-            {
-              icon: <FaCalendarCheck className="text-yellow-600" />,
-              title: "Visites priorisées",
-              text: "Créneaux organisés et confirmés rapidement."
-            }
-          ].map((card, i) => (
-            <motion.div
-              key={card.title}
-              className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/10"
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                {card.icon}
-                <h3 className="text-lg font-semibold">{card.title}</h3>
-              </div>
-              <p className="text-neutral-700">{card.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Fonctionnalités prévues */}
-      <section className="max-w-6xl mx-auto px-6 pb-12">
-        <motion.div
-          className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-6 md:p-8"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-xl md:text-2xl font-semibold mb-4">Ce qui arrive bientôt</h2>
-          <ul className="space-y-3 text-neutral-800">
-            <li className="flex items-start gap-3">
-              <FaBolt className="mt-1 text-yellow-600 shrink-0" />
-              <span><strong>Publication express</strong> de vos logements avec photos et critères.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <FaShieldAlt className="mt-1 text-yellow-600 shrink-0" />
-              <span><strong>Candidats pré-filtrés</strong> et option de <em>préparation de dossier</em> pour des décisions plus rapides.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <FaCalendarCheck className="mt-1 text-yellow-600 shrink-0" />
-              <span><strong>Agenda de visites</strong> synchronisé et confirmation en temps réel.</span>
-            </li>
-          </ul>
-
-          {/* Bandeau inscription / contact */}
-          <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
-            <a
-              href="mailto:contact@luxorpremium.com?subject=Liste%20d%E2%80%99attente%20Propri%C3%A9taires&body=Bonjour%20Luxor%2C%0AJe%20souhaite%20rejoindre%20la%20liste%20d%E2%80%99attente%20pour%20publier%20mes%20logements.%0A%0ANom%20:%0AT%C3%A9l%C3%A9phone%20:%0ANombre%20de%20logements%20:%0AQuartiers%20:%0A"
-              className="px-5 py-3 rounded-xl bg-yellow-600 hover:bg-yellow-700 text-white font-semibold shadow-lg transition"
-            >
-              Rejoindre la liste d’attente
-            </a>
-            <Link
-              href="/nous-joindres"
-              className="px-5 py-3 rounded-xl bg-white/90 hover:bg-white text-black font-semibold shadow-lg transition"
+              className="px-7 py-4 rounded-full bg-white/90 hover:bg-white text-black font-semibold shadow-lg transition"
             >
               Parler à un conseiller
             </Link>
           </div>
+        </motion.div>
+      </section>
 
-          {/* Note légale brève */}
-          <p className="mt-4 text-xs text-neutral-600">
-            Luxor n’est pas un courtier (OACIQ). Service de mise en relation et d’organisation de visites. 
-            Les conditions complètes sont disponibles sur{" "}
-            <Link href="/conditions" className="underline">/conditions</Link>.
+      {/* Avantages */}
+      <section className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          {
+            icon: <FaCrown className="text-yellow-500 text-xl" />,
+            title: "Annonce premium clé en main",
+            text: "Texte, mise en page et diffusion soignée par l’équipe Luxor."
+          },
+          {
+            icon: <FaUserCheck className="text-yellow-500 text-xl" />,
+            title: "Candidats qualifiés",
+            text: "Nos visiteurs paient pour réserver — moins de pertes de temps, plus de sérieux."
+          },
+          {
+            icon: <FaCalendarCheck className="text-yellow-500 text-xl" />,
+            title: "Visites organisées",
+            text: "Créneaux confirmés rapidement avec des candidats motivés."
+          }
+        ].map((card, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="bg-black/60 backdrop-blur-md rounded-2xl shadow-lg shadow-yellow-600/20 p-6 border border-yellow-600/20"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              {card.icon}
+              <h3 className="text-lg font-semibold">{card.title}</h3>
+            </div>
+            <p className="text-neutral-300">{card.text}</p>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* Processus */}
+      <section className="max-w-4xl mx-auto px-6 py-12">
+        <motion.div
+          className="bg-black/70 backdrop-blur-md rounded-2xl shadow-2xl border border-yellow-600/20 p-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-6">
+            Comment ça fonctionne ?
+          </h2>
+          <ul className="space-y-4 text-neutral-300">
+            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Vous envoyez</strong> vos infos et photos par email automatisé.</li>
+            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Nous créons</strong> une annonce claire, optimisée et fidèle à votre logement.</li>
+            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Vos visites</strong> sont planifiées avec des candidats sérieux via Luxor.</li>
+          </ul>
+
+          <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+            <a
+              href="mailto:contact@luxorpremium.com?subject=Nouvelle%20annonce%20Luxor&body=Nom:%0ATéléphone:%0AAdresse%20du%20logement:%0APrix:%0AType%20(logement, chambres, etc.):%0ADescription:%0APhotos%20(en%20pièce%20jointe):"
+              className="px-6 py-3 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition"
+            >
+              Publier un logement avec Luxor
+            </a>
+            <Link
+              href="/nous-joindres"
+              className="px-6 py-3 bg-white/90 text-black rounded-full font-semibold shadow-lg hover:bg-white transition"
+            >
+              Contact direct
+            </Link>
+          </div>
+
+          <p className="mt-6 text-sm text-neutral-400">
+            <span className="font-semibold text-yellow-500">Tarif compétitif :</span> à partir de <strong>79 $ / annonce</strong>, incluant mise en ligne, gestion et 2 visites organisées.
           </p>
         </motion.div>
+      </section>
+
+      {/* Témoignage propriétaire */}
+      <section className="max-w-4xl mx-auto px-6 pb-16 text-center">
+        <blockquote className="bg-black/60 backdrop-blur-md p-6 rounded-2xl shadow-md border border-yellow-600/20">
+          <p className="italic text-neutral-300">
+            “J’ai confié mon condo à Luxor, l’annonce était en ligne en 24h et j’ai reçu deux visites sérieuses la même semaine.”
+          </p>
+          <footer className="mt-3 text-sm text-neutral-400">— Marc, propriétaire à Montréal</footer>
+        </blockquote>
       </section>
     </main>
   )

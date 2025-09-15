@@ -1,189 +1,184 @@
 // src/app/logements/page.tsx
 "use client"
 
-import { useState, useMemo } from "react"
-import { motion } from "framer-motion"
 import Link from "next/link"
+import { useEffect, useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import { logements } from "../../data/logements"
-import { FaMapMarkerAlt, FaBed, FaBath, FaSearch } from "react-icons/fa"
+
+type Logement = (typeof logements)[number]
 
 export default function LogementsPage() {
-  const [search, setSearch] = useState("")
+  // -------- Pagination responsive --------
   const [page, setPage] = useState(1)
-  const PER_PAGE = 12
+  const [perPage, setPerPage] = useState(12)
 
-  // 🔎 Filtrage
-  const filteredLogements = useMemo(() => {
-    return logements.filter(
-      (l) =>
-        l.titre.toLowerCase().includes(search.toLowerCase()) ||
-        l.emplacement.toLowerCase().includes(search.toLowerCase())
-    )
-  }, [search])
+  useEffect(() => {
+    const calc = () => {
+      const w = window.innerWidth
+      // Ajuste le nombre d’items / page selon la largeur pour garder de belles lignes
+      if (w < 640) setPerPage(6)        // 1 col x 6
+      else if (w < 1024) setPerPage(8)  // 2 cols x 4
+      else if (w < 1280) setPerPage(9)  // 3 cols x 3
+      else setPerPage(12)               // 4 cols x 3
+    }
+    calc()
+    window.addEventListener("resize", calc)
+    return () => window.removeEventListener("resize", calc)
+  }, [])
 
-  const totalPages = Math.ceil(filteredLogements.length / PER_PAGE)
-  const paginatedLogements = filteredLogements.slice(
-    (page - 1) * PER_PAGE,
-    page * PER_PAGE
+  const totalPages = Math.max(1, Math.ceil(logements.length / perPage))
+  const current = useMemo(() => {
+    const start = (page - 1) * perPage
+    return logements.slice(start, start + perPage)
+  }, [page, perPage])
+
+  useEffect(() => {
+    // si on change perPage et que la page courante dépasse le nouveau total
+    if (page > totalPages) setPage(1)
+  }, [perPage, totalPages, page])
+
+  // -------- Styles helpers --------
+  const badgeClass = (label?: string) => {
+    if (!label) return "bg-yellow-600"
+    const l = label.toLowerCase()
+    if (l.includes("étud")) return "bg-blue-600"
+    if (l.includes("nouveau")) return "bg-green-600"
+    if (l.includes("coup") || l.includes("coeur") || l.includes("coeur")) return "bg-pink-600"
+    if (l.includes("promo")) return "bg-red-600"
+    return "bg-yellow-600"
+  }
+
+  const Chip = ({ children }: { children: React.ReactNode }) => (
+    <span className="text-[11px] md:text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/80">
+      {children}
+    </span>
   )
 
   return (
-    <main className="min-h-screen py-20 px-6">
-      <motion.h1
-        className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        Nos appartements premium
-      </motion.h1>
-
-      {/* 🔎 Recherche */}
-      <div className="max-w-4xl mx-auto mb-10">
-        <div className="flex items-center gap-3 bg-white/90 rounded-xl shadow px-4 py-3">
-          <FaSearch className="text-neutral-500" />
-          <input
-            type="text"
-            placeholder="Rechercher par ville ou titre..."
-            value={search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSearch(e.target.value)
-              setPage(1)
-            }}
-            className="w-full bg-transparent outline-none"
-          />
-        </div>
-      </div>
-
-      {/* 🏠 Grille logements */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
-        {paginatedLogements.length === 0 && (
-          <p className="text-neutral-300 text-center col-span-full">
-            Aucun logement trouvé.
+    <main className="relative min-h-screen w-full">
+      {/* Header section */}
+      <section className="max-w-6xl mx-auto px-6 pt-10 pb-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-3xl md:text-4xl font-semibold text-yellow-500 drop-shadow-lg">
+            Nos appartements disponibles
+          </h1>
+          <p className="mt-3 text-neutral-300 max-w-2xl mx-auto">
+            Sélection premium, visites&nbsp;
+            <span className="font-semibold text-yellow-400">prioritaires</span> sur demande.
           </p>
-        )}
+        </motion.div>
+      </section>
 
-        {paginatedLogements.map((logement, index) => {
-          const shortDesc =
-            logement.description.length > 110
-              ? logement.description.slice(0, 110) + "..."
-              : logement.description
-
-          // 🏷️ Badge dynamique (calculé à l’affichage)
-          let badge: string | null = null
-          const prixNum = parseInt(logement.prix.replace(/\D/g, "")) || 0
-          const idNum = parseInt(logement.id.replace("app", "")) || 0
-
-          if ([12, 38].includes(idNum)) {
-            badge = "Promo"
-          } else if (idNum >= 31 && idNum <= 40) {
-            badge = "Étudiant"
-          } else if (idNum <= 5) {
-            badge = "Nouveau"
-          } else if (prixNum > 2500) {
-            badge = "Exclusif"
-          }
-
-          return (
+      {/* Grid */}
+      <section className="max-w-6xl mx-auto px-6 pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {current.map((logement: Logement, i: number) => (
             <motion.div
               key={logement.id}
-              className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 border border-white/10 flex flex-col"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.05 }}
+              className="group bg-black/55 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden flex flex-col relative"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: i * 0.03 }}
             >
-              {/* Image + badge */}
-              <div className="relative">
-                <img
-                  src={logement.cover}
-                  alt={logement.titre}
-                  className="w-full h-56 object-cover"
-                />
-                {badge && (
-                  <span
-                    className={`absolute top-3 left-3 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md
-                      ${
-                        badge === "Promo"
-                          ? "bg-red-600"
-                          : badge === "Étudiant"
-                          ? "bg-blue-600"
-                          : badge === "Nouveau"
-                          ? "bg-green-600"
-                          : "bg-yellow-600"
-                      }`}
-                  >
-                    {badge}
+              {/* Badge dynamique (pastille coin haut) */}
+              {logement.badge && (
+                <span
+                  className={`absolute top-2 left-2 ${badgeClass(
+                    (logement as any).badge
+                  )} text-white text-[11px] font-bold px-2 py-1 rounded`}
+                >
+                  {(logement as any).badge}
+                </span>
+              )}
+
+              <Link href={`/logements/${logement.id}`}>
+                <div className="relative w-full h-48 md:h-56 overflow-hidden">
+                  <img
+                    src={logement.cover}
+                    alt={logement.titre}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-[11px] md:text-xs px-2 py-1 rounded shadow-md">
+                    {logement.prix}
                   </span>
-                )}
-              </div>
+                </div>
+              </Link>
 
               {/* Contenu */}
-              <div className="p-6 flex flex-col flex-grow">
-                <h2 className="text-xl font-semibold mb-2">{logement.titre}</h2>
-                <p className="text-neutral-700 mb-4 flex-grow">{shortDesc}</p>
+              <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1">
+                  {logement.titre}
+                </h3>
 
-                <div className="flex items-center gap-4 text-sm text-neutral-600 mb-4">
-                  {logement.emplacement && (
-                    <span className="flex items-center gap-1">
-                      <FaMapMarkerAlt className="text-yellow-600" />{" "}
-                      {logement.emplacement}
-                    </span>
-                  )}
-                  {logement.details?.chambres && (
-                    <span className="flex items-center gap-1">
-                      <FaBed className="text-yellow-600" />{" "}
-                      {logement.details.chambres}
-                    </span>
-                  )}
-                  {logement.details?.sallesDeBain && (
-                    <span className="flex items-center gap-1">
-                      <FaBath className="text-yellow-600" />{" "}
-                      {logement.details.sallesDeBain}
-                    </span>
-                  )}
+                {/* Pastilles d’info (emplacement / ch / sdb / m²) */}
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {(logement as any).emplacement && <Chip>{(logement as any).emplacement}</Chip>}
+                  {(logement as any).chambres && <Chip>🛏 {(logement as any).chambres} ch</Chip>}
+                  {(logement as any).salleDeBain && <Chip>🛁 {(logement as any).salleDeBain} sdb</Chip>}
+                  {(logement as any).superficie && <Chip>📐 {(logement as any).superficie}</Chip>}
                 </div>
 
-                {/* Bas aligné */}
-                <div className="mt-auto">
-                  <p className="text-lg font-bold text-black mb-4">
-                    {logement.prix}
-                  </p>
-                  <Link
-                    href={`/logements/${logement.id}`}
-                    className="inline-block text-center w-full px-5 py-3 rounded-xl text-white font-semibold shadow-md transition
-                               bg-gradient-to-r from-yellow-600 to-yellow-700 hover:opacity-90"
-                  >
-                    Découvrir cet appartement →
-                  </Link>
-                </div>
+                <Link
+                  href={`/logements/${logement.id}`}
+                  className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                >
+                  Voir le logement
+                </Link>
               </div>
             </motion.div>
-          )
-        })}
-      </div>
+          ))}
+        </div>
 
-      {/* 📄 Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mt-12">
+        {/* Pagination */}
+        <div className="mt-8 flex items-center justify-center gap-2">
           <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() => {
+              if (page > 1) {
+                setPage(p => p - 1)
+                window.scrollTo({ top: 0, behavior: "smooth" })
+              }
+            }}
             disabled={page === 1}
-            className="px-4 py-2 rounded bg-neutral-200 text-neutral-700 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 disabled:opacity-40"
           >
-            Précédent
+            ← Précédent
           </button>
-          <span className="text-sm text-neutral-300">
-            Page {page} / {totalPages}
+
+          <span className="text-white/80 text-sm px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+            Page <strong className="text-white">{page}</strong> / {totalPages}
           </span>
+
           <button
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => {
+              if (page < totalPages) {
+                setPage(p => p + 1)
+                window.scrollTo({ top: 0, behavior: "smooth" })
+              }
+            }}
             disabled={page === totalPages}
-            className="px-4 py-2 rounded bg-neutral-200 text-neutral-700 disabled:opacity-50"
+            className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 disabled:opacity-40"
           >
-            Suivant
+            Suivant →
           </button>
         </div>
-      )}
+
+        {/* CTA secondaire */}
+        <div className="text-center mt-6">
+          <Link
+            href="/reservations"
+            className="inline-block px-7 py-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow transition"
+          >
+            Réserver une visite premium
+          </Link>
+        </div>
+      </section>
     </main>
   )
 }
