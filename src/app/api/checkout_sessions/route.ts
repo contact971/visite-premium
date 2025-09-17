@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       VISITE: process.env.STRIPE_PRICE_VISITE,
       DOSSIER: process.env.STRIPE_PRICE_DOSSIER,
       PACK: process.env.STRIPE_PRICE_PACK,
+      PROPRIETAIRE: process.env.STRIPE_PRICE_PROPRIETAIRE, // 👈 nouveau
     })
 
     let priceId: string | undefined
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
       priceId = process.env.STRIPE_PRICE_DOSSIER
     } else if (type === "PACK") {
       priceId = process.env.STRIPE_PRICE_PACK
+    } else if (type === "PROPRIETAIRE") {
+      priceId = process.env.STRIPE_PRICE_PROPRIETAIRE // 👈 nouveau
     }
 
     if (!priceId) {

@@ -4,8 +4,34 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { FaCrown, FaUserCheck, FaCalendarCheck, FaBolt } from "react-icons/fa"
+import { useState } from "react"
 
 export default function ProprietairesPage() {
+  const [loading, setLoading] = useState(false)
+
+  const handleStripeCheckout = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "PROPRIETAIRE" }),
+      })
+
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert("Erreur : impossible de créer la session Stripe.")
+      }
+    } catch (err) {
+      console.error("❌ Erreur Stripe:", err)
+      alert("Erreur lors de la redirection vers le paiement.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <main className="relative min-h-screen w-full bg-gradient-to-br from-black via-neutral-900 to-black text-white">
       {/* En-tête */}
@@ -19,18 +45,19 @@ export default function ProprietairesPage() {
             Espace propriétaires
           </h1>
           <p className="mt-4 text-neutral-300 max-w-2xl mx-auto leading-relaxed">
-            Confiez-nous vos logements : vous envoyez les infos, nous créons et publions une annonce 
+            Confiez-nous vos logements : vous payez la mise en ligne, nous créons et publions une annonce 
             premium qui attire des candidats <strong>qualifiés et motivés</strong>.
           </p>
 
           {/* CTA */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="mailto:contact@luxorpremium.com?subject=Publication%20avec%20Luxor&body=Nom:%0ATéléphone:%0AAdresse%20du%20logement:%0APrix:%0AType%20(logement, chambres, etc.):%0ADescription:%0APhotos%20(en%20pièce%20jointe):"
-              className="px-7 py-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:scale-105 transition text-white font-semibold shadow-lg"
+            <button
+              onClick={handleStripeCheckout}
+              disabled={loading}
+              className="px-7 py-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-500 hover:scale-105 transition text-white font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Envoyer mes infos par email
-            </a>
+              {loading ? "Redirection..." : "Publier un logement – 79 $"}
+            </button>
             <Link
               href="/nous-joindres"
               className="px-7 py-4 rounded-full bg-white/90 hover:bg-white text-black font-semibold shadow-lg transition"
@@ -47,18 +74,18 @@ export default function ProprietairesPage() {
           {
             icon: <FaCrown className="text-yellow-500 text-xl" />,
             title: "Annonce premium clé en main",
-            text: "Texte, mise en page et diffusion soignée par l’équipe Luxor."
+            text: "Texte, mise en page et diffusion soignée par l’équipe Luxor.",
           },
           {
             icon: <FaUserCheck className="text-yellow-500 text-xl" />,
             title: "Candidats qualifiés",
-            text: "Nos visiteurs paient pour réserver — moins de pertes de temps, plus de sérieux."
+            text: "Nos visiteurs paient pour réserver — moins de pertes de temps, plus de sérieux.",
           },
           {
             icon: <FaCalendarCheck className="text-yellow-500 text-xl" />,
             title: "Visites organisées",
-            text: "Créneaux confirmés rapidement avec des candidats motivés."
-          }
+            text: "Créneaux confirmés rapidement avec des candidats motivés.",
+          },
         ].map((card, i) => (
           <motion.div
             key={i}
@@ -90,18 +117,28 @@ export default function ProprietairesPage() {
             Comment ça fonctionne ?
           </h2>
           <ul className="space-y-4 text-neutral-300">
-            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Vous envoyez</strong> vos infos et photos par email automatisé.</li>
-            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Nous créons</strong> une annonce claire, optimisée et fidèle à votre logement.</li>
-            <li><FaBolt className="inline text-yellow-500 mr-2" /> <strong>Vos visites</strong> sont planifiées avec des candidats sérieux via Luxor.</li>
+            <li>
+              <FaBolt className="inline text-yellow-500 mr-2" />{" "}
+              <strong>Vous payez</strong> la publication de votre logement via Stripe.
+            </li>
+            <li>
+              <FaBolt className="inline text-yellow-500 mr-2" />{" "}
+              <strong>Nous créons</strong> une annonce claire, optimisée et fidèle à votre logement.
+            </li>
+            <li>
+              <FaBolt className="inline text-yellow-500 mr-2" />{" "}
+              <strong>Vos visites</strong> sont planifiées avec des candidats sérieux via Luxor.
+            </li>
           </ul>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-            <a
-              href="mailto:contact@luxorpremium.com?subject=Nouvelle%20annonce%20Luxor&body=Nom:%0ATéléphone:%0AAdresse%20du%20logement:%0APrix:%0AType%20(logement, chambres, etc.):%0ADescription:%0APhotos%20(en%20pièce%20jointe):"
-              className="px-6 py-3 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition"
+            <button
+              onClick={handleStripeCheckout}
+              disabled={loading}
+              className="px-6 py-3 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Publier un logement avec Luxor
-            </a>
+              {loading ? "Redirection..." : "Publier un logement – 79 $"}
+            </button>
             <Link
               href="/nous-joindres"
               className="px-6 py-3 bg-white/90 text-black rounded-full font-semibold shadow-lg hover:bg-white transition"
@@ -111,7 +148,8 @@ export default function ProprietairesPage() {
           </div>
 
           <p className="mt-6 text-sm text-neutral-400">
-            <span className="font-semibold text-yellow-500">Tarif compétitif :</span> à partir de <strong>79 $ / annonce</strong>, incluant mise en ligne, gestion et 2 visites organisées.
+            <span className="font-semibold text-yellow-500">Tarif compétitif :</span>{" "}
+            <strong>79 $ / annonce</strong>, incluant mise en ligne, gestion et 2 visites organisées.
           </p>
         </motion.div>
       </section>
@@ -122,7 +160,9 @@ export default function ProprietairesPage() {
           <p className="italic text-neutral-300">
             “J’ai confié mon condo à Luxor, l’annonce était en ligne en 24h et j’ai reçu deux visites sérieuses la même semaine.”
           </p>
-          <footer className="mt-3 text-sm text-neutral-400">— Marc, propriétaire à Montréal</footer>
+          <footer className="mt-3 text-sm text-neutral-400">
+            — Marc, propriétaire à Montréal
+          </footer>
         </blockquote>
       </section>
     </main>
