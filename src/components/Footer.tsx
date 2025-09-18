@@ -1,7 +1,26 @@
+"use client";
 import Link from "next/link";
 import { FaFacebookF } from "react-icons/fa";
+import React from "react";
 
 export default function Footer() {
+  const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61580142945571";
+
+  const handleFacebookClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // On gère nous-mêmes l’ouverture pour être sûrs du comportement
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const win = window.open(FACEBOOK_URL, "_blank", "noopener,noreferrer");
+      if (!win) {
+        // Fallback si popups bloquées
+        window.location.assign(FACEBOOK_URL);
+      }
+    } catch {
+      window.location.assign(FACEBOOK_URL);
+    }
+  };
+
   return (
     <footer className="relative z-10 mt-16">
       <div className="mx-auto max-w-7xl px-6">
@@ -22,10 +41,7 @@ export default function Footer() {
               <Link href="/conditions" className="text-white/90 hover:text-white">
                 Conditions
               </Link>
-              <Link
-                href="/confidentialite"
-                className="text-white/90 hover:text-white"
-              >
+              <Link href="/confidentialite" className="text-white/90 hover:text-white">
                 Politique de confidentialité
               </Link>
               <Link href="/cookies" className="text-white/90 hover:text-white">
@@ -35,13 +51,14 @@ export default function Footer() {
 
             {/* Réseaux + CTA */}
             <div className="flex items-center gap-4">
-              {/* Icône Facebook */}
+              {/* Icône Facebook (zone cliquable élargie + fallback JS) */}
               <a
-                href="https://facebook.com/luxorpremium"
+                href={FACEBOOK_URL}
+                onClick={handleFacebookClick}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="text-white/90 hover:text-yellow-500 transition"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/90 hover:text-yellow-500 hover:border-yellow-500 transition"
               >
                 <FaFacebookF size={18} />
               </a>

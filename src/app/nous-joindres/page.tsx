@@ -51,7 +51,7 @@ export default function ContactPage() {
               Suivez-nous et contactez-nous via Messenger.
             </p>
             <a
-              href="https://www.facebook.com/tonlienpage"
+              href="https://www.facebook.com/profile.php?id=61580142945571"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2 rounded-xl bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition"

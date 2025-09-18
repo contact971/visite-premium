@@ -16,10 +16,12 @@ export async function POST(req: Request) {
       VISITE: process.env.STRIPE_PRICE_VISITE,
       DOSSIER: process.env.STRIPE_PRICE_DOSSIER,
       PACK: process.env.STRIPE_PRICE_PACK,
-      PROPRIETAIRE: process.env.STRIPE_PRICE_PROPRIETAIRE, // 👈 nouveau
+      PROPRIETAIRE: process.env.STRIPE_PRICE_PROPRIETAIRE,
     })
 
     let priceId: string | undefined
+    // ✅ valeur par défaut pour éviter l’erreur TS
+    let successUrl: string = `${process.env.NEXT_PUBLIC_DOMAIN}/success`
 
     if (type === "VISITE") {
       priceId = process.env.STRIPE_PRICE_VISITE
@@ -28,7 +30,8 @@ export async function POST(req: Request) {
     } else if (type === "PACK") {
       priceId = process.env.STRIPE_PRICE_PACK
     } else if (type === "PROPRIETAIRE") {
-      priceId = process.env.STRIPE_PRICE_PROPRIETAIRE // 👈 nouveau
+      priceId = process.env.STRIPE_PRICE_PROPRIETAIRE
+      successUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/proprietaires/formulaire`
     }
 
     if (!priceId) {
@@ -54,7 +57,7 @@ export async function POST(req: Request) {
         heure: heure || "Non spécifiée",
         plan: type,
       },
-      success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success`,
+      success_url: successUrl,
       cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/reservations?canceled=true`,
     })
 
