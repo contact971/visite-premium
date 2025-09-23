@@ -29,8 +29,10 @@ export default function Footer() {
             
             {/* Identité + localisation */}
             <div className="text-center md:text-left">
-              <p className="text-white font-semibold">Visite Luxor</p>
-              <p className="text-white/70 text-xs">Basé à Montréal, QC</p>
+              <p className="text-white font-semibold">Luxor – Visites Premium</p>
+              <p className="text-white/70 text-xs">
+                CP 3143, Richmond (QC) J0B 2H0, Canada
+              </p>
               <p className="text-white/60 text-xs mt-1">
                 © {new Date().getFullYear()} — Tous droits réservés.
               </p>

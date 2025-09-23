@@ -6,7 +6,10 @@ import Link from "next/link"
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen py-20 px-6">
+    <main
+      className="min-h-screen bg-fixed bg-center bg-cover py-20 px-6"
+      style={{ backgroundImage: "url('/images/background.jpg')" }} // ✅ ton background global
+    >
       {/* HERO */}
       <motion.div
         className="text-center mb-12"
@@ -14,7 +17,7 @@ export default function ContactPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+        <h1 className="text-4xl md:text-5xl font-bold text-yellow-400 drop-shadow-md">
           Nous joindre
         </h1>
         <p className="text-neutral-200 mt-4 max-w-2xl mx-auto">
@@ -24,15 +27,16 @@ export default function ContactPage() {
       </motion.div>
 
       {/* COORDONNÉES */}
-      <div className="max-w-3xl mx-auto mb-16">
+      <div className="max-w-3xl mx-auto mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Email */}
           <motion.div
-            className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center"
+            className="bg-gradient-to-br from-black/90 to-yellow-900/70 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border border-yellow-700/30"
             whileHover={{ y: -5 }}
           >
-            <FaEnvelope className="text-yellow-600 text-3xl mb-3" />
-            <h3 className="font-semibold text-lg mb-2">Courriel</h3>
-            <p className="text-neutral-700 mb-3">contact@luxorpremium.com</p>
+            <FaEnvelope className="text-yellow-400 text-3xl mb-3" />
+            <h3 className="font-semibold text-lg mb-2 text-white">Courriel</h3>
+            <p className="text-neutral-300 mb-3">contact@luxorpremium.com</p>
             <a
               href="mailto:contact@luxorpremium.com"
               className="px-5 py-2 rounded-xl bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition"
@@ -41,13 +45,14 @@ export default function ContactPage() {
             </a>
           </motion.div>
 
+          {/* Facebook */}
           <motion.div
-            className="bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center"
+            className="bg-gradient-to-br from-black/90 to-yellow-900/70 rounded-2xl shadow-lg p-6 flex flex-col items-center text-center border border-yellow-700/30"
             whileHover={{ y: -5 }}
           >
-            <FaFacebook className="text-yellow-600 text-3xl mb-3" />
-            <h3 className="font-semibold text-lg mb-2">Facebook</h3>
-            <p className="text-neutral-700 mb-3">
+            <FaFacebook className="text-yellow-400 text-3xl mb-3" />
+            <h3 className="font-semibold text-lg mb-2 text-white">Facebook</h3>
+            <p className="text-neutral-300 mb-3">
               Suivez-nous et contactez-nous via Messenger.
             </p>
             <a
@@ -60,13 +65,18 @@ export default function ContactPage() {
             </a>
           </motion.div>
         </div>
+
+        {/* Note discrète avec adresse */}
+        <p className="text-center text-neutral-400 text-xs mt-6">
+          Adresse postale officielle : CP 3143, Richmond (QC) J0B 2H0, Canada
+        </p>
       </div>
 
       {/* SECTION ÉQUIPE */}
       <section className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center mb-20">
         {/* Image équipe */}
         <motion.div
-          className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 p-4"
+          className="bg-gradient-to-br from-black/90 to-yellow-900/70 backdrop-blur-md rounded-2xl shadow-2xl border border-yellow-700/30 p-4"
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -83,17 +93,17 @@ export default function ContactPage() {
 
         {/* Texte expertise */}
         <motion.div
-          className="bg-gradient-to-br from-black/70 to-black/40 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/10"
+          className="bg-gradient-to-br from-black/90 to-yellow-900/70 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-yellow-700/30"
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-semibold text-white mb-3 drop-shadow-md">
+          <h2 className="text-2xl font-semibold text-yellow-400 mb-3 drop-shadow-md">
             Une équipe dédiée à vos démarches
           </h2>
           <p className="text-neutral-200 leading-relaxed">
-            Chez <strong>Luxor Premium</strong>, nous savons que trouver un
+            Chez <strong>Luxor – Visites Premium</strong>, nous savons que trouver un
             logement à Montréal est souvent un défi : forte demande, visites
             limitées, propriétaires exigeants. Notre équipe agit comme un{" "}
             <em>concierge immobilier</em>, en vous offrant un service haut de
