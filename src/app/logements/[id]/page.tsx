@@ -1,16 +1,51 @@
 // src/app/logements/[id]/page.tsx
 "use client"
 
-import { notFound } from "next/navigation"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { logements } from "../../../data/logements"
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined, FaArrowLeft } from "react-icons/fa"
+import { useMemo, useState } from "react"
+import { motion } from "framer-motion"
+import {
+  FaMapMarkerAlt,
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+  FaArrowLeft,
+} from "react-icons/fa"
+
+import Lightbox from "yet-another-react-lightbox"
+import "yet-another-react-lightbox/styles.css"
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails"
+import "yet-another-react-lightbox/plugins/thumbnails.css"
+import Zoom from "yet-another-react-lightbox/plugins/zoom"
 
 export default function LogementDetail({ params }: { params: { id: string } }) {
-  const logement = logements.find((l) => l.id === params.id)
-  if (!logement) return notFound()
+  const router = useRouter()
+
+  // Trouve le logement à partir de l'id (mémo pour éviter un recalcul inutile)
+  const logement = useMemo(
+    () => logements.find((l) => l.id === params.id),
+    [params.id]
+  )
+
+  // Si l'id est invalide -> petit fallback (pas de notFound() côté client)
+  if (!logement) {
+    return (
+      <main className="min-h-screen flex items-center justify-center p-10">
+        <div className="text-center">
+          <p className="text-white text-lg mb-4">Logement introuvable.</p>
+          <button
+            onClick={() => router.push("/logements")}
+            className="inline-flex items-center gap-2 text-sm font-medium text-yellow-600 hover:text-white hover:bg-yellow-600 px-4 py-2 rounded-lg transition"
+          >
+            <FaArrowLeft className="text-xs" />
+            Retour à la liste des logements
+          </button>
+        </div>
+      </main>
+    )
+  }
 
   // Images secondaires (hors cover)
   const galleryImages = Array.from(
@@ -18,7 +53,18 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
     (_, i) => `${logement.dossier}/${i + 1}.jpg`
   )
 
-  const [isOpen, setIsOpen] = useState(false)
+  // Lightbox
+  const [open, setOpen] = useState(false)
+  const [index, setIndex] = useState(0)
+
+  // Retour avec fallback (garde la pagination/filtre si l’utilisateur venait de la liste)
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back()
+    } else {
+      router.push("/logements")
+    }
+  }
 
   return (
     <main className="relative min-h-screen">
@@ -61,14 +107,18 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
                     <img
                       src={src}
                       alt={`${logement.titre} – photo ${i + 1}`}
-                      className="w-full h-64 object-cover rounded-xl shadow-md"
+                      className="w-full h-64 object-cover rounded-xl shadow-md cursor-pointer hover:opacity-80"
+                      onClick={() => {
+                        setIndex(i)
+                        setOpen(true)
+                      }}
                     />
                     {/* Watermark */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img
                         src="/logo.png"
                         alt="Luxor watermark"
-                        className="opacity-15 w-1/2 pointer-events-none select-none"
+                        className="opacity-20 w-1/2 pointer-events-none select-none"
                       />
                     </div>
                   </div>
@@ -77,7 +127,10 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               {galleryImages.length > 4 && (
                 <div className="text-center mt-6">
                   <button
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                      setIndex(0)
+                      setOpen(true)
+                    }}
                     className="px-6 py-3 bg-neutral-900 text-white rounded-xl shadow hover:opacity-90 transition"
                   >
                     Voir toutes les {galleryImages.length} photos
@@ -117,12 +170,12 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             )}
           </section>
 
-          {/* Description */}
-          <section className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-8">
-            <h3 className="text-xl font-semibold text-neutral-900 mb-4">
+          {/* Description – thème sombre/or (cohérent avec Conditions) */}
+          <section className="bg-gradient-to-br from-black/90 to-yellow-900/80 backdrop-blur-md rounded-2xl shadow-2xl border border-yellow-700/30 p-8 text-white">
+            <h3 className="text-xl font-semibold text-yellow-400 mb-4 drop-shadow-md">
               Description
             </h3>
-            <p className="text-neutral-700 leading-relaxed whitespace-pre-line">
+            <p className="text-neutral-200 leading-relaxed whitespace-pre-line">
               {logement.description}
             </p>
           </section>
@@ -141,66 +194,27 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             </Link>
           </section>
 
-          {/* Retour à la liste optimisé (lisibilité améliorée) */}
-<div className="text-center">
-  <Link
-    href="/logements"
-    className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-yellow-600 hover:text-white hover:bg-yellow-600 px-4 py-2 rounded-lg transition drop-shadow-md"
-  >
-    <FaArrowLeft className="text-xs" />
-    Retour à la liste des logements
-  </Link>
-</div>
+          {/* Retour (back avec fallback) */}
+          <div className="text-center">
+            <button
+              onClick={handleBack}
+              className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-yellow-600 hover:text-white hover:bg-yellow-600 px-4 py-2 rounded-lg transition drop-shadow-md"
+            >
+              <FaArrowLeft className="text-xs" />
+              Retour à la liste des logements
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Modal galerie */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto p-6"
-          >
-            <div className="absolute inset-0">
-              <img
-                src="/images/background.jpg"
-                alt="background"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/70" />
-            </div>
-
-            <button
-              onClick={() => setIsOpen(false)}
-              className="relative z-10 self-end mb-4 px-4 py-2 bg-white text-black rounded shadow hover:bg-neutral-200 transition"
-            >
-              Fermer
-            </button>
-
-            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
-              {galleryImages.map((src, i) => (
-                <div key={i} className="relative">
-                  <img
-                    src={src}
-                    alt={`${logement.titre} – photo ${i + 1}`}
-                    className="w-full h-72 object-cover rounded-xl shadow"
-                  />
-                  {/* Watermark */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/logo.png"
-                      alt="Luxor watermark"
-                      className="opacity-15 w-2/3 max-w-sm pointer-events-none select-none"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Lightbox (plein écran, zoom + miniatures) */}
+      <Lightbox
+        open={open}
+        close={() => setOpen(false)}
+        index={index}
+        slides={galleryImages.map((src) => ({ src }))}
+        plugins={[Zoom, Thumbnails]}
+      />
     </main>
   )
 }
