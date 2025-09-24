@@ -910,4 +910,226 @@ id: "app16",
   photos: 7,
   cover: "/images/app60/cover.jpg",
 },
+{
+  id: "app61",
+  titre: "Appartement 4 ½ rénové – Rosemont",
+  prix: "1 495 $ / mois",
+  description: `Cet appartement 4 ½ situé au cœur de Rosemont – Petite-Patrie offre un cadre de vie moderne et convivial. 
+La cuisine rénovée avec un îlot central spacieux constitue le cœur du logement, idéale pour cuisiner et recevoir. 
+Les électroménagers s’intègrent parfaitement et l’espace profite d’une belle luminosité naturelle grâce aux grandes fenêtres.
+
+Le salon et les chambres disposent de planchers en bois qui ajoutent une touche chaleureuse et accueillante. 
+La salle de bain, récemment rénovée, comprend une douche vitrée et des finitions modernes qui facilitent l’entretien 
+et assurent un confort optimal au quotidien.
+
+Situé dans un secteur recherché, ce logement combine la tranquillité résidentielle et la proximité des commodités : 
+épiceries, cafés indépendants, transports en commun (métro et autobus) et espaces verts comme le parc Maisonneuve. 
+C’est un choix idéal pour des professionnels, un couple ou une petite famille souhaitant s’établir dans un quartier 
+dynamique et bien desservi de Montréal.`,
+  emplacement: "Montréal — Rosemont – Petite-Patrie",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 850 pi²"
+  },
+  dossier: "/images/app61",
+  cover: "/images/app61/cover.jpg",
+  photos: 5
+},
+{
+  id: "app62",
+  titre: "Appartement 4 ½ rénové – Hochelaga-Maisonneuve",
+  prix: "1 425 $ / mois",
+  description: `Cet appartement 4 ½ rénové situé à Hochelaga-Maisonneuve allie modernité et confort. 
+La cuisine contemporaine avec comptoirs spacieux et électroménagers récents offre un espace convivial pour préparer vos repas. 
+L’îlot central devient un véritable point de rassemblement, parfait pour recevoir ou travailler à domicile.
+
+Les chambres sont lumineuses et dotées de grandes fenêtres, permettant de profiter d’une belle lumière naturelle toute la journée. 
+La salle de bain a été entièrement rénovée et propose une douche vitrée moderne ainsi que des finitions élégantes, 
+facilitant l’entretien au quotidien.
+
+Le logement se trouve à proximité de nombreux services : marchés locaux, boulangeries, cafés, 
+ainsi que des stations de métro et arrêts d’autobus. La localisation permet également un accès rapide aux grands axes routiers, 
+tout en conservant un cadre de vie calme et agréable.
+
+Idéal pour un couple, de jeunes professionnels ou une petite famille cherchant à s’établir 
+dans un quartier dynamique et en pleine transformation.`,
+  emplacement: "Montréal — Hochelaga-Maisonneuve",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 850 pi²"
+  },
+  dossier: "/images/app62",
+  cover: "/images/app62/cover.jpg",
+  photos: 7
+},
+  {
+  id: "app63",
+  titre: "Maison 2 chambres – Rosemont",
+  prix: "1 895 $ / mois",
+  description: `Cette charmante maison située dans le quartier chaleureux de Rosemont offre un parfait équilibre entre tranquillité résidentielle et proximité des commodités urbaines. Avec ses 2 chambres lumineuses, ses planchers de bois franc et ses espaces bien entretenus, elle propose un cadre de vie cosy et fonctionnel.
+
+La cuisine moderne, équipée d’appareils récents et d’un comptoir pratique, s’ouvre sur une salle à manger conviviale. La salle de bain est rénovée et dispose d’une douche vitrée élégante, avec des finitions contemporaines qui simplifient l’entretien. 
+
+La maison inclut également une buanderie interne, un stationnement extérieur et un petit espace vert privé, parfait pour profiter des beaux jours. 
+
+Située à quelques minutes à pied des cafés, épiceries, parcs, et transports publics (bus + métro), cette maison est idéale pour un couple, des professionnels ou une petite famille qui souhaite s’établir dans un quartier vibrant avec une excellente qualité de vie.`,
+  emplacement: "Montréal — Rosemont",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 1 100 pi²"
+  },
+  dossier: "/images/app63",
+  cover: "/images/app63/cover.jpg",
+  photos: 9
+},
+{
+  id: "app64",
+  titre: "Maison 3 chambres – Ahuntsic",
+  prix: "2 095 $ / mois",
+  description: `Située dans le quartier paisible d’Ahuntsic, cette maison de 3 chambres combine confort moderne et ambiance chaleureuse. Dès l’entrée, vous serez séduit par les planchers de bois franc et la luminosité naturelle qui traverse les espaces de vie.
+
+La cuisine rénovée, ouverte sur la salle à manger, est idéale pour recevoir. Le salon dispose d’un poêle décoratif qui ajoute une touche de convivialité lors des soirées d’hiver. Les chambres sont de belles dimensions et conviennent parfaitement à une famille ou à des professionnels recherchant un espace supplémentaire pour un bureau à domicile.
+
+Vous bénéficierez également d’un stationnement privé, d’une buanderie dans le logement et d’un espace extérieur agréable pour profiter des beaux jours.  
+
+Proche des écoles, parcs, commerces de quartier et transports en commun (métro Sauvé et bus rapides), cette maison offre un équilibre idéal entre tranquillité résidentielle et accessibilité urbaine.`,
+  emplacement: "Montréal — Ahuntsic–Cartierville",
+  details: {
+    chambres: 3,
+    sallesDeBain: 1,
+    superficie: "≈ 1 000 pi²"
+  },
+  dossier: "/images/app64",
+  cover: "/images/app64/cover.jpg",
+  photos: 7
+},
+  {
+  id: "app65",
+  titre: "Condo moderne 4 ½ – Griffintown",
+  prix: "2 150 $ / mois",
+  description: `Ce superbe condo 4 ½ situé au cœur de Griffintown allie style moderne et confort. La cuisine contemporaine avec îlot central et électroménagers en acier inoxydable s’ouvre sur un espace de vie lumineux, parfait pour recevoir ou partager des repas conviviaux. 
+
+Les deux chambres fermées offrent de belles dimensions, idéales pour un couple, une petite famille ou pour installer un bureau à domicile. La salle de bain spacieuse bénéficie de finitions modernes et d’une excellente fonctionnalité.  
+
+Le bâtiment récent propose une ambiance sécurisée et bien entretenue, et l’appartement est à proximité immédiate des commerces, restaurants branchés, épiceries fines et cafés. Vous profitez également d’un accès rapide au centre-ville, au Vieux-Montréal et au bord du canal Lachine pour vos balades.  
+
+Ce condo est une occasion idéale pour ceux qui souhaitent vivre dans l’un des quartiers les plus prisés de Montréal, alliant vie urbaine, confort et modernité.`,
+  emplacement: "Montréal — Griffintown",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 850 pi²"
+  },
+  dossier: "/images/app65",
+  cover: "/images/app65/cover.jpg",
+  photos: 5
+},
+{
+  id: "app66",
+  titre: "Appartement rénové 4 ½ – Hochelaga-Maisonneuve",
+  prix: "1 495 $ / mois",
+  description: `Situé au cœur du quartier Hochelaga-Maisonneuve, ce 4 ½ rénové offre un espace de vie moderne, lumineux et fonctionnel. Les planchers récents et la cuisine au design épuré avec armoires blanches apportent une ambiance chaleureuse et contemporaine. 
+
+L’appartement comprend deux chambres fermées bien proportionnées, parfaites pour un couple, une petite famille ou pour un espace bureau à domicile. La pièce principale à aire ouverte est idéale pour recevoir, tout en profitant d’une belle luminosité naturelle grâce aux grandes fenêtres et au puits de lumière.  
+
+À proximité, vous trouverez tous les services : commerces de la rue Ontario, restaurants locaux, marchés, parcs, ainsi que des stations de métro qui facilitent les déplacements rapides vers le centre-ville.  
+
+Un logement clé en main dans un quartier dynamique, alliant confort, accessibilité et qualité de vie.`,
+  emplacement: "Montréal — Hochelaga-Maisonneuve",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 800 pi²"
+  },
+  dossier: "/images/app66",
+  cover: "/images/app66/cover.jpg",
+  photos: 5
+},
+  {
+  id: "app67",
+  titre: "Condo rénové 4 ½ – Rosemont – La Petite-Patrie",
+  prix: "1 875 $ / mois",
+  description: `Situé dans le secteur prisé de Rosemont – La Petite-Patrie, ce superbe 4 ½ entièrement rénové combine élégance et confort moderne. La cuisine à aire ouverte, dotée d’un îlot central et d’électroménagers récents, s’intègre parfaitement à l’espace de vie lumineux. Les planchers clairs et les luminaires contemporains ajoutent une touche chic et accueillante à l’ensemble.  
+
+Les deux chambres fermées offrent une belle intimité, idéales pour une petite famille, un couple ou encore pour aménager un espace bureau. La salle de bain moderne est pensée pour la fonctionnalité et le confort au quotidien.  
+
+À deux pas, vous profitez des commerces locaux, du marché Jean-Talon, des cafés branchés, ainsi que de plusieurs parcs verdoyants. Les stations de métro et lignes d’autobus proches rendent vos déplacements rapides et pratiques vers le centre-ville.  
+
+Un logement clé en main, parfait pour ceux qui souhaitent vivre dans un environnement urbain dynamique tout en bénéficiant d’un espace moderne et bien conçu.`,
+  emplacement: "Montréal — Rosemont – La Petite-Patrie",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 850 pi²"
+  },
+  dossier: "/images/app67",
+  cover: "/images/app67/cover.jpg",
+  photos: 6
+},
+{
+  id: "app68",
+  titre: "Appartement 4 ½ rénové – Villeray",
+  prix: "1 725 $ / mois",
+  description: `Ce charmant 4 ½ situé au cœur de Villeray combine confort moderne et ambiance chaleureuse. La cuisine rénovée avec ses armoires en deux tons (bois et blanc) et ses électroménagers inox offre un espace fonctionnel et convivial. Le salon et la salle à manger à aire ouverte profitent d’une belle luminosité naturelle grâce aux grandes fenêtres et aux planchers clairs.  
+
+Les deux chambres fermées sont parfaites pour une petite famille, un couple ou pour intégrer un bureau à domicile. La salle de bain est rénovée et pensée pour le confort quotidien.  
+
+Villeray est un quartier apprécié pour ses nombreux commerces de proximité, ses cafés, ses épiceries spécialisées et ses espaces verts comme le parc Jarry. Vous êtes aussi à distance de marche du métro, ce qui facilite vos déplacements vers le centre-ville.  
+
+Un appartement clé en main, idéal pour profiter de la vie urbaine montréalaise dans un environnement paisible et dynamique.`,
+  emplacement: "Montréal — Villeray",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 800 pi²"
+  },
+  dossier: "/images/app68",
+  cover: "/images/app68/cover.jpg",
+  photos: 8
+},
+{
+  id: "app69",
+  titre: "Maison 5 ½ avec cachet – Ahuntsic",
+  prix: "2 350 $ / mois",
+  description: `Située dans le quartier familial et verdoyant d’Ahuntsic, cette maison 5 ½ allie charme et modernité. La cuisine est fonctionnelle avec de nombreux rangements et une disposition ouverte vers la salle à manger, idéale pour accueillir famille et amis.  
+
+La salle de bain entièrement rénovée impressionne avec son bain sur pattes de style vintage et sa vanité en bois massif, créant une atmosphère de spa à la maison. Les trois chambres fermées offrent des espaces lumineux et polyvalents, parfaits pour une famille ou pour aménager un bureau à domicile.  
+
+La maison bénéficie également d’un espace extérieur privé, idéal pour les repas en terrasse ou pour profiter du calme du quartier. Proche des écoles, parcs et commerces locaux, ainsi que du métro Sauvé, elle permet de combiner confort résidentiel et accessibilité au centre-ville.  
+
+Une occasion unique de profiter d’un cadre paisible et élégant tout en restant connecté à la vie montréalaise.`,
+  emplacement: "Montréal — Ahuntsic",
+  details: {
+    chambres: 3,
+    sallesDeBain: 1,
+    superficie: "≈ 1 200 pi²"
+  },
+  dossier: "/images/app69",
+  cover: "/images/app69/cover.jpg",
+  photos: 10
+},
+{
+  id: "app70",
+  titre: "Appartement 4 ½ moderne – Hochelaga",
+  prix: "1 525 $ / mois",
+  description: `Ce superbe 4 ½ rénové, situé au cœur d’Hochelaga, combine design moderne et confort. L’aire de vie principale est spacieuse et lumineuse, mettant en valeur un îlot central en bois au style contemporain, idéal pour cuisiner et recevoir.  
+
+Le logement comprend deux chambres fermées de bonnes dimensions, une salle de bain rénovée et des finitions actuelles qui confèrent une ambiance chaleureuse et élégante. Le plancher moderne et les luminaires suspendus ajoutent une touche urbaine raffinée.  
+
+Idéalement localisé, l’appartement se trouve à proximité des commerces de la rue Ontario, des cafés branchés, ainsi que du métro Joliette, assurant une excellente mobilité.  
+
+Un choix parfait pour les jeunes professionnels ou les couples à la recherche d’un logement chic et fonctionnel dans un quartier dynamique de Montréal.`,
+  emplacement: "Montréal — Hochelaga",
+  details: {
+    chambres: 2,
+    sallesDeBain: 1,
+    superficie: "≈ 900 pi²"
+  },
+  dossier: "/images/app70",
+  cover: "/images/app70/cover.jpg",
+  photos: 8
+},
 ];

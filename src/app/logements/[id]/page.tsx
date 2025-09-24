@@ -5,7 +5,6 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { logements } from "../../../data/logements"
 import { useMemo, useState } from "react"
-import { motion } from "framer-motion"
 import {
   FaMapMarkerAlt,
   FaBed,
@@ -23,13 +22,12 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom"
 export default function LogementDetail({ params }: { params: { id: string } }) {
   const router = useRouter()
 
-  // Trouve le logement à partir de l'id (mémo pour éviter un recalcul inutile)
+  // Trouver le logement via l'id
   const logement = useMemo(
     () => logements.find((l) => l.id === params.id),
     [params.id]
   )
 
-  // Si l'id est invalide -> petit fallback (pas de notFound() côté client)
   if (!logement) {
     return (
       <main className="min-h-screen flex items-center justify-center p-10">
@@ -57,7 +55,6 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
 
-  // Retour avec fallback (garde la pagination/filtre si l’utilisateur venait de la liste)
   const handleBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
       router.back()
@@ -69,7 +66,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
   return (
     <main className="relative min-h-screen">
       <div className="relative z-10">
-        {/* Cover immersive avec watermark */}
+        {/* Cover avec watermark */}
         <section className="relative w-full h-[65vh]">
           <div className="relative w-full h-full">
             <img
@@ -77,7 +74,6 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               alt={`${logement.titre} – couverture`}
               className="w-full h-full object-cover"
             />
-            {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src="/logo.png"
@@ -98,7 +94,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
 
         {/* Contenu principal */}
         <div className="max-w-6xl mx-auto px-6 py-12 space-y-10">
-          {/* Galerie limitée */}
+          {/* Galerie */}
           {galleryImages.length > 0 && (
             <section>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -113,7 +109,6 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
                         setOpen(true)
                       }}
                     />
-                    {/* Watermark */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img
                         src="/logo.png"
@@ -170,7 +165,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             )}
           </section>
 
-          {/* Description – thème sombre/or (cohérent avec Conditions) */}
+          {/* Description */}
           <section className="bg-gradient-to-br from-black/90 to-yellow-900/80 backdrop-blur-md rounded-2xl shadow-2xl border border-yellow-700/30 p-8 text-white">
             <h3 className="text-xl font-semibold text-yellow-400 mb-4 drop-shadow-md">
               Description
@@ -194,7 +189,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
             </Link>
           </section>
 
-          {/* Retour (back avec fallback) */}
+          {/* Retour */}
           <div className="text-center">
             <button
               onClick={handleBack}
@@ -207,13 +202,69 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {/* Lightbox (plein écran, zoom + miniatures) */}
+      {/* ✅ Lightbox stylisée */}
       <Lightbox
         open={open}
         close={() => setOpen(false)}
         index={index}
         slides={galleryImages.map((src) => ({ src }))}
         plugins={[Zoom, Thumbnails]}
+        styles={{
+          container: {
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,0.95) 60%, rgba(161,98,7,0.85) 100%)",
+          },
+          button: {
+            backgroundColor: "rgba(161,98,7,0.7)",
+            borderRadius: "9999px",
+            padding: "10px",
+          },
+          icon: { color: "#fff" },
+          thumbnailsContainer: {
+            background: "rgba(0,0,0,0.6)",
+            padding: "8px",
+            borderRadius: "12px",
+          },
+          thumbnail: {
+            borderRadius: "8px",
+            border: "2px solid transparent",
+          },
+        }}
+        render={{
+          slide: ({ slide }) => (
+            <div className="relative w-full h-full flex items-center justify-center">
+              <img
+                src={slide.src}
+                alt="Luxor logement"
+                className="max-h-screen max-w-full object-contain"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img
+                  src="/logo.png"
+                  alt="Luxor watermark"
+                  className="opacity-20 w-1/2 max-w-md pointer-events-none select-none"
+                />
+              </div>
+            </div>
+          ),
+          thumbnail: ({ slide, rect, render }) => {
+            const thumbIndex = galleryImages.findIndex((src) => src === slide.src)
+            const isActive = thumbIndex === index
+            return (
+              <div
+                className={`overflow-hidden rounded-lg border-2 ${
+                  isActive ? "border-yellow-400" : "border-transparent"
+                }`}
+              >
+                <img
+                  src={slide.src}
+                  alt="Luxor miniature"
+                  className="h-16 w-24 object-cover"
+                />
+              </div>
+            )
+          },
+        }}
       />
     </main>
   )
