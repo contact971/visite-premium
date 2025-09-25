@@ -22,7 +22,7 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom"
 export default function LogementDetail({ params }: { params: { id: string } }) {
   const router = useRouter()
 
-  // Trouver le logement via l'id
+  // Trouver le logement
   const logement = useMemo(
     () => logements.find((l) => l.id === params.id),
     [params.id]
@@ -55,6 +55,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
 
+  // Gestion du retour
   const handleBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
       router.back()
@@ -66,7 +67,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
   return (
     <main className="relative min-h-screen">
       <div className="relative z-10">
-        {/* Cover avec watermark */}
+        {/* Cover immersive */}
         <section className="relative w-full h-[65vh]">
           <div className="relative w-full h-full">
             <img
@@ -74,6 +75,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               alt={`${logement.titre} – couverture`}
               className="w-full h-full object-cover"
             />
+            {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src="/logo.png"
@@ -94,7 +96,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
 
         {/* Contenu principal */}
         <div className="max-w-6xl mx-auto px-6 py-12 space-y-10">
-          {/* Galerie */}
+          {/* Galerie limitée */}
           {galleryImages.length > 0 && (
             <section>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -103,12 +105,13 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
                     <img
                       src={src}
                       alt={`${logement.titre} – photo ${i + 1}`}
-                      className="w-full h-64 object-cover rounded-xl shadow-md cursor-pointer hover:opacity-80"
+                      className="w-full h-64 object-cover rounded-xl shadow-md cursor-pointer hover:opacity-80 transition"
                       onClick={() => {
                         setIndex(i)
                         setOpen(true)
                       }}
                     />
+                    {/* Watermark */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img
                         src="/logo.png"
@@ -178,8 +181,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
           {/* CTA réservation */}
           <section className="bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-2xl shadow-xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-white">
             <p className="text-lg font-medium">
-              Intéressé par ce logement ? Réservez votre visite premium dès
-              maintenant.
+              Intéressé par ce logement ? Réservez votre visite premium dès maintenant.
             </p>
             <Link
               href="/reservations"
@@ -202,7 +204,7 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {/* ✅ Lightbox stylisée */}
+      {/* Lightbox premium */}
       <Lightbox
         open={open}
         close={() => setOpen(false)}
@@ -212,22 +214,24 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
         styles={{
           container: {
             background:
-              "linear-gradient(135deg, rgba(0,0,0,0.95) 60%, rgba(161,98,7,0.85) 100%)",
+              "linear-gradient(135deg, rgba(0,0,0,0.92) 60%, rgba(161,98,7,0.7) 100%)",
           },
           button: {
-            backgroundColor: "rgba(161,98,7,0.7)",
-            borderRadius: "9999px",
-            padding: "10px",
+            backgroundColor: "rgba(161,98,7,0.8)",
+            borderRadius: "50%",
+            padding: "12px",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
           },
-          icon: { color: "#fff" },
+          icon: { color: "#fff", width: "20px", height: "20px" },
           thumbnailsContainer: {
-            background: "rgba(0,0,0,0.6)",
-            padding: "8px",
-            borderRadius: "12px",
+            background: "rgba(0,0,0,0.5)",
+            padding: "10px",
+            borderRadius: "16px",
           },
           thumbnail: {
-            borderRadius: "8px",
+            borderRadius: "10px",
             border: "2px solid transparent",
+            transition: "all 0.3s ease",
           },
         }}
         render={{
@@ -236,8 +240,9 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               <img
                 src={slide.src}
                 alt="Luxor logement"
-                className="max-h-screen max-w-full object-contain"
+                className="max-h-screen max-w-full object-contain transition-opacity duration-500"
               />
+              {/* ✅ Watermark */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
                   src="/logo.png"
@@ -247,19 +252,22 @@ export default function LogementDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
           ),
-          thumbnail: ({ slide, rect, render }) => {
+          thumbnail: ({ slide, rect }) => {
             const thumbIndex = galleryImages.findIndex((src) => src === slide.src)
             const isActive = thumbIndex === index
             return (
               <div
                 className={`overflow-hidden rounded-lg border-2 ${
-                  isActive ? "border-yellow-400" : "border-transparent"
-                }`}
+                  isActive
+                    ? "border-yellow-400 scale-105 shadow-lg"
+                    : "border-transparent"
+                } transition-all duration-300`}
+                style={{ width: rect.width, height: rect.height }}
               >
                 <img
                   src={slide.src}
                   alt="Luxor miniature"
-                  className="h-16 w-24 object-cover"
+                  className="h-full w-full object-cover"
                 />
               </div>
             )
