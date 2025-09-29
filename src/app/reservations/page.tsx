@@ -13,7 +13,7 @@ export default function Reservations() {
   const [logement, setLogement] = useState<string>("")
   const [date, setDate] = useState("")
   const [heure, setHeure] = useState("")
-  const [plan, setPlan] = useState<Plan>("PACK")
+  const [plan, setPlan] = useState<Plan>("VISITE")
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
@@ -222,7 +222,7 @@ export default function Reservations() {
               </div>
             </label>
 
-            <label className="relative flex items-start gap-3 p-4 rounded-xl bg-black/60 border-2 border-yellow-600 cursor-pointer transition">
+            <label className="flex items-start gap-3 p-4 rounded-xl bg-black/40 border border-white/10 hover:border-yellow-600 cursor-pointer transition">
               <input
                 type="radio"
                 name="plan"
@@ -232,12 +232,7 @@ export default function Reservations() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlan(e.target.value as Plan)}
               />
               <div>
-                <div className="text-white font-medium">
-                  Pack complet — 85&nbsp;$
-                  <span className="ml-2 inline-block text-xs font-bold text-yellow-700 bg-yellow-200 px-2 py-0.5 rounded-full">
-                    Meilleur choix
-                  </span>
-                </div>
+                <div className="text-white font-medium">Pack complet — 85&nbsp;$</div>
                 <p className="text-sm text-neutral-400">Visite premium + préparation de dossier.</p>
               </div>
             </label>
