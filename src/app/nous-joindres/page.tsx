@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <main
       className="min-h-screen bg-fixed bg-center bg-cover py-20 px-6"
-      style={{ backgroundImage: "url('/images/background.jpg')" }} // ✅ ton background global
+      style={{ backgroundImage: "url('/images/background.jpg')" }} // ✅ fond global inchangé
     >
       {/* HERO */}
       <motion.div
@@ -76,19 +76,26 @@ export default function ContactPage() {
       <section className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center mb-20">
         {/* Image équipe */}
         <motion.div
-          className="bg-gradient-to-br from-black/90 to-yellow-900/70 backdrop-blur-md rounded-2xl shadow-2xl border border-yellow-700/30 p-4"
+          className="relative rounded-2xl overflow-hidden shadow-2xl border border-yellow-700/30"
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <img
-            src="/images/background2.jpg"
-            alt="Notre équipe"
-            className="rounded-xl"
+            src="/images/background3.jpg" // ✅ nouvelle photo d'équipe
+            alt="Rencontre avec l’équipe Luxor — photo illustrative"
+            className="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
           />
+          {/* Gradient subtil */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-black/30 via-black/10 to-transparent pointer-events-none" />
+          {/* Watermark Luxor */}
+          <div className="absolute bottom-3 left-3 flex items-center gap-2 bg-black/40 px-2 py-1 rounded">
+            <img src="/logo.png" alt="Luxor" className="w-14 h-auto opacity-90" />
+            <span className="text-[11px] text-white/85">Photo illustrative</span>
+          </div>
         </motion.div>
 
         {/* Texte expertise */}
