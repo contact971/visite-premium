@@ -4,16 +4,15 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
-import { FaStar, FaCheckCircle } from "react-icons/fa"
 import { logements } from "../data/logements"
 import PremiumCard from "../components/PremiumCard"
+import { FaHome, FaCalendarCheck, FaLock, FaBolt, FaShieldAlt, FaCrown } from "react-icons/fa"
 
 type Logement = (typeof logements)[number]
 
 export default function Home() {
   const [itemsPerView, setItemsPerView] = useState(4)
 
-  // calcule combien de cartes selon largeur écran
   useEffect(() => {
     const calc = () => {
       const w = window.innerWidth
@@ -27,7 +26,6 @@ export default function Home() {
     return () => window.removeEventListener("resize", calc)
   }, [])
 
-  // regroupe logements par "pages"
   const pages: Logement[][] = useMemo(() => {
     const out: Logement[][] = []
     for (let i = 0; i < logements.length; i += itemsPerView) {
@@ -43,28 +41,28 @@ export default function Home() {
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
           <img src="/logo.png" alt="Luxor" className="w-44 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-3xl md:text-5xl font-semibold text-white drop-shadow-lg">
-            Visites immobilières premium à Montréal
+            Votre visite confirmée rapidement
           </h1>
           <p className="text-neutral-200 max-w-2xl mx-auto mt-4">
-            <strong>Visitez avant tout le monde</strong> et maximisez vos chances d’obtenir le logement désiré.
+            Passez avant les autres candidats et maximisez vos chances d’obtenir le logement désiré.
           </p>
 
           <div className="mt-8 flex items-center justify-center gap-3">
             <Link href="/reservations" className="px-7 py-4 bg-yellow-600 text-white rounded-full shadow-xl hover:bg-yellow-700 hover:scale-105 transition">
-              Réserver ma visite premium – 50 $
+              Réserver ma visite
             </Link>
-            <Link href="/logements" className="px-7 py-4 bg-white/90 text-black rounded-full shadow-xl hover:bg-white hover:scale-105 transition">
+            <Link href="/logements" className="px-7 py-4 bg-yellow-600 text-white rounded-full shadow-xl hover:bg-yellow-700 hover:scale-105 transition">
               Voir les logements
             </Link>
           </div>
 
-          {/* KPIs en PremiumCard */}
+          {/* KPIs */}
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
-              ["200+", "visites organisées"],
+              ["70+", "logements listés"],
               ["48h", "confirmation moyenne"],
-              ["4.9 ★", "note de satisfaction"],
-              ["#MTL", "couverture locale"],
+              ["200+", "visites organisées"],
+              ["Exclusif", "service unique au Québec"],
             ].map(([kpi, label], i) => (
               <PremiumCard key={i} className="text-center text-white">
                 <p className="text-2xl font-bold text-yellow-500">{kpi}</p>
@@ -87,7 +85,6 @@ export default function Home() {
               key={logement.id}
               className="group bg-black/60 backdrop-blur-md rounded-xl shadow-lg hover:shadow-yellow-600/40 transition overflow-hidden flex flex-col relative border border-white/10"
             >
-              {/* Badge dynamique */}
               {logement.badge && (
                 <span className="absolute top-2 left-2 bg-yellow-600 text-white text-xs font-bold px-2 py-1 rounded shadow">
                   {logement.badge}
@@ -124,87 +121,93 @@ export default function Home() {
         <div className="text-center mt-6">
           <Link
             href="/logements"
-            className="inline-block px-6 py-3 bg-white/90 text-black font-medium rounded-xl shadow hover:bg-white transition"
+            className="inline-block px-6 py-3 bg-yellow-600 text-white font-medium rounded-xl shadow hover:bg-yellow-700 transition"
           >
             Voir tous les logements
           </Link>
         </div>
       </section>
 
-      {/* ================= SERVICES ================= */}
-      <section className="relative z-10 w-full py-16 px-6">
+      {/* ================= COMMENT ÇA MARCHE + AVIS ================= */}
+      <section className="relative z-10 w-full py-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h2
-            className="text-3xl md:text-4xl font-semibold text-white mb-4 drop-shadow-lg"
+            className="text-3xl md:text-4xl font-semibold text-white mb-12 drop-shadow-lg"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Nos services premium
+            Comment ça marche ?
           </motion.h2>
-          <p className="text-neutral-200 max-w-2xl mx-auto mb-10">
-            Réservez votre <strong>visite prioritaire</strong> dès maintenant.  
-            Option préparation de dossier disponible lors de la réservation.
-          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            <PremiumCard>
-              <h3 className="text-lg font-semibold text-white mb-2">Visite prioritaire</h3>
-              <p className="text-neutral-300">Créneau confirmé rapidement et suivi personnalisé.</p>
-              <p className="text-yellow-500 font-bold mt-3">$50 / visite</p>
-            </PremiumCard>
-          </div>
-
-          <div className="mt-10">
-            <Link href="/reservations" className="inline-block px-7 py-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow transition">
-              Réserver ma visite premium – 50 $
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= TÉMOIGNAGES ================= */}
-      <section className="relative z-10 w-full py-14 px-6">
-        <div className="max-w-6xl mx-auto text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-semibold text-white drop-shadow-lg">Témoignages de nos clients</h2>
-        </div>
-
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-          {[
-            { name: "Marc-André", text: "Service super rapide et efficace. J’ai pu visiter un appart dès le lendemain, sans perdre mon temps à attendre des appels." },
-            { name: "Catherine", text: "Très professionnel, tout était clair du début à la fin. La visite premium m’a donné une longueur d’avance pour déposer mon dossier." },
-            { name: "Jonathan", text: "Honnêtement, ça vaut le 50 $. Pas de stress, horaire respecté, puis j’ai trouvé mon logement plus vite que prévu." },
-          ].map((t, i) => (
-            <PremiumCard key={i} className="flex flex-col justify-between text-white">
-              <div>
-                <div className="flex items-center gap-2 text-yellow-400 mb-2">
-                  <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                </div>
-                <p>{t.text}</p>
+          {/* Étapes en 3 colonnes */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
+            {[
+              { icon: <FaHome className="text-yellow-500 text-3xl mb-3" />, title: "1. Choisissez un logement", text: "Parcourez nos appartements disponibles à Montréal et sélectionnez celui qui correspond parfaitement à vos besoins." },
+              { icon: <FaCalendarCheck className="text-yellow-500 text-3xl mb-3" />, title: "2. Réservez votre visite", text: "Votre place est confirmée rapidement. Tous les détails vous sont envoyés par courriel et SMS, sans perte de temps." },
+              { icon: <FaLock className="text-yellow-500 text-3xl mb-3" />, title: "3. Ajoutez l’option dossier vérifié", text: "Nous validons vos références (anciens locateurs, Équifax, TAL). Les propriétaires sont rassurés et vos chances d’obtenir le logement augmentent fortement." },
+            ].map((step, i) => (
+              <div key={i}>
+                {step.icon}
+                <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                <p className="text-white/80 leading-relaxed">{step.text}</p>
               </div>
-              <p className="mt-4 text-xs text-white/70 flex items-center gap-1">
-                <FaCheckCircle className="text-green-400" /> Avis vérifié — {t.name}
-              </p>
-            </PremiumCard>
-          ))}
+            ))}
+          </div>
+
+          {/* Témoignages visibles */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            {[
+              { name: "Marc-André", text: "J’ai pu visiter dès le lendemain, aucun délai inutile." },
+              { name: "Catherine", text: "Clarté et efficacité, j’ai eu une longueur d’avance." },
+              { name: "Jonathan", text: "Pas de stress, horaire respecté, logement trouvé rapidement." },
+            ].map((t, i) => (
+              <div key={i} className="bg-black/70 border border-yellow-600 rounded-xl p-5 shadow-md text-left">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-yellow-500">★★★★★</span>
+                  <span className="text-green-400 text-xs">Avis certifié</span>
+                </div>
+                <p className="text-sm text-white/90 italic">“{t.text}”</p>
+                <p className="mt-3 text-xs text-white/70">— {t.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ================= ÉQUIPE ================= */}
-      <section className="relative z-10 w-full py-16">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+      {/* ================= POURQUOI LUXOR ================= */}
+      <section className="relative z-10 w-full py-20">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
           <div className="rounded-2xl overflow-hidden shadow-2xl">
-            <img src="/images/background2.jpg" alt="Équipe professionnelle" className="w-full h-full object-cover" loading="lazy" />
+            <img src="/images/background2.jpg" alt="Équipe Luxor" className="w-full h-full object-cover" loading="lazy" />
           </div>
-          <PremiumCard>
-            <h2 className="text-2xl font-semibold text-white mb-3 drop-shadow-md">Une équipe dédiée à votre succès locatif</h2>
-            <p className="text-neutral-300 leading-relaxed">
-              Nous vous offrons un accompagnement humain et transparent : visites prioritaires confirmées rapidement, 
-              préparation de dossier sur mesure disponible en option et suivi personnalisé. 
-              Avec Luxor, vous maximisez vos chances d’obtenir le logement désiré — avant les autres candidats.
-            </p>
-          </PremiumCard>
+          <div>
+            <h2 className="text-2xl font-semibold text-white mb-6 drop-shadow-md">Pourquoi choisir Luxor ?</h2>
+            <ul className="space-y-6 text-left">
+              <li className="flex items-start gap-3">
+                <FaBolt className="text-yellow-500 text-2xl mt-1" />
+                <div>
+                  <p className="text-lg font-semibold text-white">Visites confirmées</p>
+                  <p className="text-white/80 text-sm">Réservez en priorité, sans délai.</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <FaShieldAlt className="text-yellow-500 text-2xl mt-1" />
+                <div>
+                  <p className="text-lg font-semibold text-white">Dossiers vérifiés</p>
+                  <p className="text-white/80 text-sm">Ils inspirent confiance et rassurent les propriétaires.</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <FaCrown className="text-yellow-500 text-2xl mt-1" />
+                <div>
+                  <p className="text-lg font-semibold text-white">Service exclusif</p>
+                  <p className="text-white/80 text-sm">Un accompagnement unique au Québec.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -213,12 +216,12 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <PremiumCard className="text-center">
             <h3 className="text-xl md:text-2xl text-white font-semibold mb-2">Prêt à accélérer votre recherche ?</h3>
-            <p className="text-neutral-300 mb-6">
-              Réservez votre visite prioritaire dès maintenant.  
-              Option préparation de dossier disponible lors de la réservation.
+            <p className="text-white/80 mb-6">
+              Sécurisez dès maintenant une visite confirmée rapidement.  
+              Option dossier vérifié disponible lors de la réservation.
             </p>
             <Link href="/reservations" className="inline-block px-7 py-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow transition">
-              Réserver ma visite premium – 50 $
+              Réserver maintenant
             </Link>
           </PremiumCard>
         </div>
@@ -227,7 +230,7 @@ export default function Home() {
       {/* ================= Sticky CTA (mobile) ================= */}
       <div className="fixed bottom-4 left-0 right-0 mx-auto w-[92%] md:hidden z-50">
         <Link href="/reservations" className="block text-center px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-full shadow-xl transition">
-          Réserver ma visite premium – 50 $
+          Réserver maintenant
         </Link>
       </div>
     </main>

@@ -155,7 +155,7 @@ id: "app7",
     etage: 2,
   },
   dossier: "/images/app13",
-  photos: 13,
+  photos: 10,
   cover: "/images/app13/cover.jpg",
   },
   {
