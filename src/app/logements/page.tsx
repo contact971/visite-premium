@@ -65,7 +65,7 @@ function toSqft(val?: string) {
 }
 
 const badgeClass = (label?: string) => {
-  if (!label) return "opacity-0 pointer-events-none" // toujours rendu, mais invisible si vide
+  if (!label) return "opacity-0 pointer-events-none" // rendu mais invisible si vide
   const l = label.toLowerCase()
   if (l.includes("loft")) return "bg-purple-600"
   if (l.includes("nouveau")) return "bg-green-600"
@@ -105,7 +105,7 @@ export default function LogementsPage() {
     return () => window.removeEventListener("resize", calc)
   }, [])
 
-  // Quartiers
+  // Quartiers (filtre simple)
   const quartiers = useMemo(() => {
     const set = new Set<string>()
     data.forEach((logement) => {
@@ -187,56 +187,74 @@ export default function LogementsPage() {
       {/* Grid logements */}
       <section className="max-w-6xl mx-auto px-6 pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {current.map((logement, i) => (
-            <motion.div
-              key={logement.id}
-              className="group bg-black/55 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden flex flex-col relative"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.35, delay: i * 0.03 }}
-            >
-              {/* Pastille (au-dessus de l'image) */}
-              <span
-                className={`absolute top-2 left-2 z-20 ${badgeClass(logement.badge)} text-white text-[11px] font-bold px-2 py-1 rounded drop-shadow`}
-                data-badge={logement.badge}
+          {current.map((logement, i) => {
+            // ➜ Bandeau pour les 2 premières cartes de la page 1 :
+            const showReserveStripe = page === 1 && i < 2
+            // Variante par IDs (dé-commente et commente la ligne ci-dessus si tu préfères)
+            // const reservedIds = new Set<string>(["app3", "app9"])
+            // const showReserveStripe = reservedIds.has(logement.id)
+
+            return (
+              <motion.div
+                key={logement.id}
+                className="group bg-black/55 backdrop-blur-md border border-white/10 rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden flex flex-col relative"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: i * 0.03 }}
               >
-                {logement.badge}
-              </span>
-
-              <Link href={`/logements/${logement.id}`}>
-                <div className="relative z-0 w-full h-48 md:h-56 overflow-hidden">
-                  <img
-                    src={logement.cover}
-                    alt={logement.titre}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-[11px] md:text-xs px-2 py-1 rounded shadow-md">
-                    {logement.prix}
-                  </span>
-                </div>
-              </Link>
-
-              <div className="p-4 flex flex-col flex-1">
-                <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1">{logement.titre}</h3>
-
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {logement.emplacement && <Chip>{logement.emplacement}</Chip>}
-                  {logement.details?.chambres != null && <Chip>🛏 {logement.details.chambres} ch</Chip>}
-                  {logement.details?.sallesDeBain != null && <Chip>🛁 {logement.details.sallesDeBain} sdb</Chip>}
-                  {logement.details?.superficie && <Chip>📐 {logement.details.superficie}</Chip>}
-                </div>
-
-                <Link
-                  href={`/logements/${logement.id}`}
-                  className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                {/* Pastille (au-dessus de l'image) */}
+                <span
+                  className={`absolute top-2 left-2 z-20 ${badgeClass(logement.badge)} text-white text-[11px] font-bold px-2 py-1 rounded drop-shadow`}
+                  data-badge={logement.badge}
                 >
-                  Voir le logement
+                  {logement.badge}
+                </span>
+
+                <Link href={`/logements/${logement.id}`}>
+                  <div className="relative z-0 w-full h-48 md:h-56 overflow-hidden">
+                    {/* Bandeau de réservation en cours */}
+                    {showReserveStripe && (
+                      <div
+                        className="absolute top-0 left-0 right-0 z-30 bg-red-600/90 text-white text-[11px] md:text-xs font-semibold text-center py-1"
+                        aria-label="Actuellement en cours de réservation"
+                      >
+                        Actuellement en cours de réservation
+                      </div>
+                    )}
+
+                    <img
+                      src={logement.cover}
+                      alt={logement.titre}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <span className="absolute bottom-2 right-2 bg-yellow-600 text-white text-[11px] md:text-xs px-2 py-1 rounded shadow-md">
+                      {logement.prix}
+                    </span>
+                  </div>
                 </Link>
-              </div>
-            </motion.div>
-          ))}
+
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-sm font-semibold text-white line-clamp-2 mb-1">{logement.titre}</h3>
+
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {logement.emplacement && <Chip>{logement.emplacement}</Chip>}
+                    {logement.details?.chambres != null && <Chip>🛏 {logement.details.chambres} ch</Chip>}
+                    {logement.details?.sallesDeBain != null && <Chip>🛁 {logement.details.sallesDeBain} sdb</Chip>}
+                    {logement.details?.superficie && <Chip>📐 {logement.details.superficie}</Chip>}
+                  </div>
+
+                  <Link
+                    href={`/logements/${logement.id}`}
+                    className="mt-auto inline-block px-4 py-2 text-center text-xs font-medium bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                  >
+                    Voir le logement
+                  </Link>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
         {/* Pagination */}
@@ -249,7 +267,7 @@ export default function LogementsPage() {
             ← Précédent
           </button>
 
-        <span className="text-white/80 text-sm px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+          <span className="text-white/80 text-sm px-3 py-2 rounded-lg bg-white/5 border border-white/10">
             Page <strong className="text-white">{page}</strong> / {totalPages}
           </span>
 
